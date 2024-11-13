@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -9,14 +9,19 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    main.cpp \
-    mainwindow.cpp
+    src/database/databasemanager.cpp \
+    src/main.cpp \
+    src/windows/mainwindow.cpp \
+    src/windows/authwindow.cpp
 
 HEADERS += \
-    mainwindow.h
+    src/database/databasemanager.h \
+    src/windows/mainwindow.h \
+    src/windows/authwindow.h
 
 FORMS += \
-    mainwindow.ui
+    src/windows/mainwindow.ui \
+    src/windows/authwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

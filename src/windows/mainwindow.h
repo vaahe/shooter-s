@@ -17,6 +17,9 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+signals:
+    loggedOut();
+
 private:
     Ui::MainWindow *ui;
 };

@@ -6,6 +6,8 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    connect(ui->logoutBtn, &QPushButton::clicked, this, &MainWindow::loggedOut);
 }
 
 MainWindow::~MainWindow()
