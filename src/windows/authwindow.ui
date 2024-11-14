@@ -26,13 +26,6 @@
        </property>
        <widget class="QWidget" name="loginPage">
         <layout class="QGridLayout" name="gridLayout_2">
-         <item row="4" column="0">
-          <widget class="QPushButton" name="redirectToRegisterBtn">
-           <property name="text">
-            <string>Don't have an account? Register</string>
-           </property>
-          </widget>
-         </item>
          <item row="2" column="0">
           <layout class="QVBoxLayout" name="loginPasswordLayout">
            <item>
@@ -43,11 +36,15 @@
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="loginPasswordInput"/>
+            <widget class="QLineEdit" name="loginPasswordInput">
+             <property name="echoMode">
+              <enum>QLineEdit::EchoMode::Password</enum>
+             </property>
+            </widget>
            </item>
           </layout>
          </item>
-         <item row="3" column="0">
+         <item row="4" column="0">
           <widget class="QPushButton" name="loginBtn">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
@@ -76,6 +73,13 @@
            </property>
           </widget>
          </item>
+         <item row="5" column="0">
+          <widget class="QPushButton" name="redirectToRegisterBtn">
+           <property name="text">
+            <string>Don't have an account? Register</string>
+           </property>
+          </widget>
+         </item>
          <item row="1" column="0">
           <layout class="QVBoxLayout" name="loginUsernameLayout">
            <item>
@@ -89,6 +93,13 @@
             <widget class="QLineEdit" name="loginUsernameInput"/>
            </item>
           </layout>
+         </item>
+         <item row="3" column="0">
+          <widget class="QCheckBox" name="rememberMeCheckbox">
+           <property name="text">
+            <string>Remember me</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>
@@ -114,7 +125,11 @@
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="registerPasswordInput"/>
+            <widget class="QLineEdit" name="registerPasswordInput">
+             <property name="echoMode">
+              <enum>QLineEdit::EchoMode::Password</enum>
+             </property>
+            </widget>
            </item>
           </layout>
          </item>
@@ -148,7 +163,11 @@
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="registerRepeatPasswordInput"/>
+            <widget class="QLineEdit" name="registerRepeatPasswordInput">
+             <property name="echoMode">
+              <enum>QLineEdit::EchoMode::Password</enum>
+             </property>
+            </widget>
            </item>
           </layout>
          </item>

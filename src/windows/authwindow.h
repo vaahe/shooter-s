@@ -2,9 +2,12 @@
 #define AUTHWINDOW_H
 
 #include "src/database/databasemanager.h"
+#include "src/widgets/toolbutton/toolbutton.h"
 
 #include <QWidget>
+#include <QSettings>
 #include <QLineEdit>
+#include <QToolButton>
 
 namespace Ui {
 class AuthWindow;
@@ -19,8 +22,13 @@ public:
     ~AuthWindow();
 
 public slots:
-    void onRegister();
     void onLogin();
+    void onRegister();
+    void onRememberMe();
+
+    void saveLoginData();
+    void clearLoginData();
+    void loadLoginData();
 
     void redirectToLogin();
     void redirectToRegister();
@@ -35,7 +43,6 @@ signals:
     void loginFailed();
     void registerSucceeded();
     void registerFailed();
-
 
 private:
     Ui::AuthWindow *ui;

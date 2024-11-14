@@ -3,6 +3,7 @@
 
 AuthWindow::AuthWindow(QWidget *parent) : QWidget(parent), ui(new Ui::AuthWindow), m_dbManager(DatabaseManager::getInstance()) {
     ui->setupUi(this);
+    loadLoginData();
 
     connect(ui->loginBtn, &QPushButton::clicked, this, &AuthWindow::onLogin);
     connect(ui->registerBtn, &QPushButton::clicked, this, &AuthWindow::onRegister);
@@ -19,6 +20,8 @@ AuthWindow::AuthWindow(QWidget *parent) : QWidget(parent), ui(new Ui::AuthWindow
     connect(m_dbManager, &DatabaseManager::registerFailed, this, &AuthWindow::registerFailed);
     connect(m_dbManager, &DatabaseManager::registerSucceeded, this, &AuthWindow::registerSucceeded);
     connect(m_dbManager, &DatabaseManager::registerSucceeded, this, &AuthWindow::resetRegisterValues);
+
+    connect(ui->rememberMeCheckbox, &QCheckBox::stateChanged, this, &AuthWindow::onRememberMe);
 }
 
 AuthWindow::~AuthWindow() {
@@ -91,5 +94,45 @@ void AuthWindow::resetRegisterValues() {
 void AuthWindow::validateInput(QLineEdit *inputElement, const QString inputString) {
     if (inputString.isEmpty()) {
         inputElement->setStyleSheet("border: 1px solid red");
+    }
+}
+
+void AuthWindow::saveLoginData() {
+    const QString usernameInputStr = ui->loginUsernameInput->text().trimmed();
+    const QString passwordInputStr = ui->loginPasswordInput->text().trimmed();
+
+    QSettings settings("ycrdi", "shooter-s");
+    settings.setValue("rememberMe", true);
+    settings.setValue("username", usernameInputStr);
+    settings.setValue("password", passwordInputStr);
+}
+
+void AuthWindow::clearLoginData() {
+    QSettings settings("ycrdi", "shooter-s");
+    settings.remove("rememberMe");
+    settings.remove("username");
+    settings.remove("password");
+}
+
+void AuthWindow::loadLoginData() {
+    QSettings settings("ycrdi", "shooter-s");
+
+    bool rememberMe = settings.value("rememberMe", false).toBool();
+    ui->rememberMeCheckbox->setChecked(rememberMe);
+
+    if (rememberMe) {
+        QString savedUsername = settings.value("username").toString();
+        QString savedPassword = settings.value("password").toString();
+
+        ui->loginUsernameInput->setText(savedUsername);
+        ui->loginPasswordInput->setText(savedPassword);
+    }
+}
+
+void AuthWindow::onRememberMe() {
+    if (ui->rememberMeCheckbox->isChecked()) {
+       saveLoginData();
+    } else {
+        clearLoginData();
     }
 }
