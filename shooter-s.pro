@@ -11,11 +11,13 @@ CONFIG += c++17
 SOURCES += \
     src/database/databasemanager.cpp \
     src/main.cpp \
+    src/widgets/toolbutton/toolbutton.cpp \
     src/windows/mainwindow.cpp \
     src/windows/authwindow.cpp
 
 HEADERS += \
     src/database/databasemanager.h \
+    src/widgets/toolbutton/toolbutton.h \
     src/windows/mainwindow.h \
     src/windows/authwindow.h
 
@@ -27,3 +29,6 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    resources/app.qrc
