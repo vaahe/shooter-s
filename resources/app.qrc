@@ -2,5 +2,17 @@
     <qresource prefix="/images">
         <file>images/hide.png</file>
         <file>images/show.png</file>
+        <file>images/background_10.png</file>
+        <file>images/mute.png</file>
+        <file>images/unmute.png</file>
+        <file>images/favicon.ico</file>
+    </qresource>
+    <qresource prefix="/sounds">
+        <file>sounds/gunshot.wav</file>
+    </qresource>
+    <qresource prefix="/data">
+        <file>data/pointsMatrix_10.json</file>
+        <file>data/pointsMatrix_25.json</file>
+        <file>data/calibration_result.xml</file>
     </qresource>
 </RCC>
