@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>447</width>
+    <height>372</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,13 +21,64 @@
      </property>
      <item>
       <widget class="QStackedWidget" name="stackedWidget">
+       <property name="maximumSize">
+        <size>
+         <width>500</width>
+         <height>500</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLineEdit {
+	border-radius: 6px;
+	padding: 2px 8px;
+	font-size: 14px;
+	border: 1px solid #CDCDCD;
+}
+
+QVBoxLayout {
+	border: 1px solid red;
+}
+
+QStackedWidget {
+	background-color: white;
+	border-radius: 6px;
+}
+
+QPushButton {
+	border-radius: 6px;
+	border: 1px solid #CDCDCD;
+	background-color: gray;
+	padding: 0px 10px;
+	font-size: 14px;
+}</string>
+       </property>
        <property name="currentIndex">
         <number>0</number>
        </property>
        <widget class="QWidget" name="loginPage">
         <layout class="QGridLayout" name="gridLayout_2">
-         <item row="2" column="0">
+         <item row="1" column="0">
+          <layout class="QVBoxLayout" name="loginUsernameLayout">
+           <property name="spacing">
+            <number>2</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="loginUsernameLabel">
+             <property name="text">
+              <string>Username</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="loginUsernameInput"/>
+           </item>
+          </layout>
+         </item>
+         <item row="3" column="0">
           <layout class="QVBoxLayout" name="loginPasswordLayout">
+           <property name="spacing">
+            <number>2</number>
+           </property>
            <item>
             <widget class="QLabel" name="loginPasswordLabel">
              <property name="text">
@@ -44,7 +95,7 @@
            </item>
           </layout>
          </item>
-         <item row="4" column="0">
+         <item row="6" column="0">
           <widget class="QPushButton" name="loginBtn">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
@@ -57,6 +108,20 @@
            </property>
           </widget>
          </item>
+         <item row="4" column="0">
+          <widget class="QCheckBox" name="rememberMeCheckbox">
+           <property name="text">
+            <string>Remember me</string>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="0">
+          <widget class="QPushButton" name="redirectToRegisterBtn">
+           <property name="text">
+            <string>Don't have an account? Register</string>
+           </property>
+          </widget>
+         </item>
          <item row="0" column="0">
           <widget class="QLabel" name="loginLabel">
            <property name="sizePolicy">
@@ -64,6 +129,9 @@
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">font-size: 36px;</string>
            </property>
            <property name="text">
             <string>Login</string>
@@ -74,32 +142,17 @@
           </widget>
          </item>
          <item row="5" column="0">
-          <widget class="QPushButton" name="redirectToRegisterBtn">
-           <property name="text">
-            <string>Don't have an account? Register</string>
+          <spacer name="verticalSpacer">
+           <property name="orientation">
+            <enum>Qt::Orientation::Vertical</enum>
            </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <layout class="QVBoxLayout" name="loginUsernameLayout">
-           <item>
-            <widget class="QLabel" name="loginUsernameLabel">
-             <property name="text">
-              <string>Username</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="loginUsernameInput"/>
-           </item>
-          </layout>
-         </item>
-         <item row="3" column="0">
-          <widget class="QCheckBox" name="rememberMeCheckbox">
-           <property name="text">
-            <string>Remember me</string>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>200</height>
+            </size>
            </property>
-          </widget>
+          </spacer>
          </item>
         </layout>
        </widget>
@@ -107,6 +160,9 @@
         <layout class="QGridLayout" name="gridLayout_3">
          <item row="0" column="0">
           <widget class="QLabel" name="registerLabel">
+           <property name="styleSheet">
+            <string notr="true">font-size: 36px;</string>
+           </property>
            <property name="text">
             <string>Register</string>
            </property>
@@ -115,25 +171,7 @@
            </property>
           </widget>
          </item>
-         <item row="2" column="0">
-          <layout class="QVBoxLayout" name="registerPasswordLayout">
-           <item>
-            <widget class="QLabel" name="registerPasswordLabel">
-             <property name="text">
-              <string>Password</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="registerPasswordInput">
-             <property name="echoMode">
-              <enum>QLineEdit::EchoMode::Password</enum>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item row="4" column="0">
+         <item row="5" column="0">
           <widget class="QPushButton" name="registerBtn">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
@@ -146,15 +184,11 @@
            </property>
           </widget>
          </item>
-         <item row="5" column="0">
-          <widget class="QPushButton" name="redirectToLoginBtn">
-           <property name="text">
-            <string>Already have an account? Login</string>
-           </property>
-          </widget>
-         </item>
          <item row="3" column="0">
           <layout class="QVBoxLayout" name="registerRepeatPasswordLayout">
+           <property name="spacing">
+            <number>2</number>
+           </property>
            <item>
             <widget class="QLabel" name="registerRepeatPasswordLabel">
              <property name="text">
@@ -171,8 +205,31 @@
            </item>
           </layout>
          </item>
+         <item row="6" column="0">
+          <widget class="QPushButton" name="redirectToLoginBtn">
+           <property name="text">
+            <string>Already have an account? Login</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <spacer name="verticalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Orientation::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>150</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
          <item row="1" column="0">
           <layout class="QVBoxLayout" name="registerUsernameLayout">
+           <property name="spacing">
+            <number>2</number>
+           </property>
            <item>
             <widget class="QLabel" name="registerUsernameLabel">
              <property name="text">
@@ -182,6 +239,27 @@
            </item>
            <item>
             <widget class="QLineEdit" name="registerUsernameInput"/>
+           </item>
+          </layout>
+         </item>
+         <item row="2" column="0">
+          <layout class="QVBoxLayout" name="registerPasswordLayout">
+           <property name="spacing">
+            <number>2</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="registerPasswordLabel">
+             <property name="text">
+              <string>Password</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="registerPasswordInput">
+             <property name="echoMode">
+              <enum>QLineEdit::EchoMode::Password</enum>
+             </property>
+            </widget>
            </item>
           </layout>
          </item>

@@ -2,6 +2,7 @@
 #define AUTHWINDOW_H
 
 #include "src/database/databasemanager.h"
+#include "src/utilities/globalsmanager.h"
 #include "src/widgets/toolbutton/toolbutton.h"
 
 #include <QWidget>
@@ -47,6 +48,7 @@ signals:
 private:
     Ui::AuthWindow *ui;
     DatabaseManager* m_dbManager;
+    GlobalsManager &m_globalsManager = GlobalsManager::getInstance();
 };
 
 #endif // AUTHWINDOW_H
