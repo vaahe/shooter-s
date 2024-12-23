@@ -1,13 +1,23 @@
 #include "src/windows/mainwindow.h"
 #include "src/windows/authwindow.h"
+#include "src/security/usbchecker.h"
 #include "src/database/databasemanager.h"
 
+#include <QMessageBox>
 #include <QApplication>
 #include <QStackedWidget>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+
+    // if (!checkDevice()) {
+    //     QMessageBox::warning(nullptr, "Flash key is not found", "Insert the correct flash", "Ok");
+    //     return -1;
+    // }
+
+    qRegisterMetaType<const Result>("Result");
+    qRegisterMetaType<const Result&>("Result&");
 
     DatabaseManager *dbManager = DatabaseManager::getInstance();
     dbManager->connect();

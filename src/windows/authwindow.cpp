@@ -41,6 +41,7 @@ void AuthWindow::onLogin() {
     user.password = passwordInputStr;
 
     m_dbManager->signIn(user);
+    m_globalsManager.setUserId(user.username);
 }
 
 void AuthWindow::onRegister() {

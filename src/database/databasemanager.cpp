@@ -69,7 +69,7 @@ void DatabaseManager::createResultsTable() {
     const QString resultsTableDescription = QString("id INTEGER PRIMARY KEY AUTOINCREMENT, "
                                                     "result TEXT NOT NULL, "
                                                     "\"date\" TEXT NOT NULL DEFAULT (DATETIME('now')), "
-                                                    "userId INTEGER NOT NULL, "
+                                                    "userId TEXT NOT NULL, "
                                                     "distance INTEGER NOT NULL, "
                                                     "imitationDistance INTEGER NOT NULL, "
                                                     "FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE");
@@ -77,14 +77,15 @@ void DatabaseManager::createResultsTable() {
     createTable(resultsTableName, resultsTableDescription);
 }
 
-void DatabaseManager::insertResult(const Result &data) {
+void DatabaseManager::insertResult(const Result &resultData) {
     QSqlQuery query(m_db);
 
-    query.prepare("INSERT INTO results (result, userId, distance, imitationDistance) VALUES (:result, :userId, :distance, :imitationDistance)");
-    query.bindValue(":result", data.result);
-    query.bindValue(":userId", data.userId);
-    query.bindValue(":distance", data.distance);
-    query.bindValue(":imitationDistance", data.imitationDistance);
+    query.prepare("INSERT INTO results (result, userId, distance, imitationDistance, date) VALUES (:result, :userId, :distance, :imitationDistance, :date)");
+    query.bindValue(":result", resultData.result);
+    query.bindValue(":userId", resultData.userId);
+    query.bindValue(":distance", resultData.distance);
+    query.bindValue(":imitationDistance", resultData.imitationDistance);
+    query.bindValue(":date", QDateTime::currentDateTime().toString(Qt::ISODate));
 
     if (!query.exec()) {
         qWarning() << "Failed to insert result:" <<query.lastError().text();
@@ -112,6 +113,8 @@ void DatabaseManager::signIn(const User& user) {
     }
 
     if (query.next()) {
+        qDebug() << "line 116:" << query.value(0);
+
         emit loginSucceeded();
     } else {
         emit loginFailed();
@@ -150,4 +153,62 @@ void DatabaseManager::signUp(const User &user) {
     } else {
         emit registerSucceeded();
     }
+}
+
+QList<Result> DatabaseManager::getResults(const QString& userId) {
+    QList<Result> results;
+    QSqlQuery query(m_db);
+
+    query.prepare("SELECT * FROM results WHERE userId = :userId ORDER BY date DESC");
+    query.bindValue(":userId", userId);
+
+    if (!query.exec()) {
+        qWarning() << "Failed to retrieve results by" << userId;
+        return results;
+    }
+
+    while (query.next()) {
+        Result resultData;
+        resultData.result = query.value("result").toString();
+        resultData.userId = query.value("userId").toString();
+        resultData.distance = query.value("distance").toInt();
+        resultData.imitationDistance = query.value("imitationDistance").toInt();
+        resultData.date = query.value("date").toString();
+
+        results.append(resultData);
+    }
+
+    return results;
+}
+
+QList<Result> DatabaseManager::getResultsByRange(const QString& userId, const QDate &startDate, const QDate &endDate) {
+    QList<Result> resultsByRange;
+
+    if (startDate.isNull() || endDate.isNull()) {
+        return resultsByRange;
+    }
+
+    QSqlQuery query(m_db);
+    query.prepare("SELECT * FROM results WHERE userId = :userId AND date BETWEEN :startDate and :endDate");
+    query.bindValue(":userId", userId);
+    query.bindValue(":startDate", startDate);
+    query.bindValue(":endDate", endDate);
+
+    if (!query.exec()) {
+        qWarning() << "Failed to retrieve results within range" << startDate << "to" << endDate << query.lastError().text();
+        return resultsByRange;
+    }
+
+    while (query.next()) {
+        Result resultData;
+        resultData.result = query.value("result").toString();
+        resultData.userId = query.value("userId").toString();
+        resultData.distance = query.value("distance").toInt();
+        resultData.imitationDistance = query.value("imitationDistance").toInt();
+        resultData.date = query.value("date").toString();
+
+        resultsByRange.append(resultData);
+    }
+
+    return resultsByRange;
 }
