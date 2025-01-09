@@ -1,5 +1,6 @@
 #include "resultswidget.h"
 
+
 ResultsWidget::ResultsWidget(QWidget* parent) :
     QTableWidget(parent),
     m_table(new QTableWidget(this)),
@@ -9,9 +10,9 @@ ResultsWidget::ResultsWidget(QWidget* parent) :
     m_dbManager(DatabaseManager::getInstance())
 {
     setupUI();
-
     getResults("1");
 }
+
 
 void ResultsWidget::setupUI()
 {
@@ -47,6 +48,7 @@ void ResultsWidget::setupUI()
     connect(m_searchButton, &QPushButton::clicked, this, &ResultsWidget::onSearchClicked);
 }
 
+
 void ResultsWidget::onSearchClicked()
 {
     QDate startDate = m_startDateEdit->date();
@@ -62,6 +64,7 @@ void ResultsWidget::onSearchClicked()
 
     displayResults(results);
 }
+
 
 void ResultsWidget::displayResults(const QList<Result>& results)
 {
@@ -85,6 +88,7 @@ void ResultsWidget::displayResults(const QList<Result>& results)
         m_table->setItem(row, 4, dateItem);
     }
 }
+
 
 void ResultsWidget::getResults(const QString &userId) {
     QList<Result> results = m_dbManager->getResults(userId);

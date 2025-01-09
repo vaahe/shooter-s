@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
@@ -26,10 +27,12 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->soundBtn, &QPushButton::clicked, this, &MainWindow::toggleSound);
 }
 
+
 MainWindow::~MainWindow()
 {
     delete ui;
 }
+
 
 void MainWindow::startCalibrating() {
     if (m_cameraCalibrator == nullptr) {
@@ -48,6 +51,7 @@ void MainWindow::startCalibrating() {
     });
 }
 
+
 void MainWindow::stopCalibrating() {
     if (m_cameraCalibrator != nullptr) {
         m_cameraCalibrator->stopCalibration();
@@ -56,6 +60,7 @@ void MainWindow::stopCalibrating() {
     delete m_cameraCalibrator;
     m_cameraCalibrator = nullptr;
 }
+
 
 void MainWindow::startProcessing() {
     if (m_frameProcessor == nullptr) {
@@ -74,6 +79,7 @@ void MainWindow::startProcessing() {
     m_frameProcessor->startProcessing();
     resetBackgroundImage();
 }
+
 
 void MainWindow::stopProcessing() {
     if (m_frameProcessor != nullptr) {
@@ -99,6 +105,7 @@ void MainWindow::setLanguageMenu() {
     }
 }
 
+
 void MainWindow::setLightIntensityMenu() {
     QActionGroup *lightIntensityActionGroup = new QActionGroup(ui->lightIntensityMenu);
     lightIntensityActionGroup->setExclusive(true);
@@ -116,6 +123,7 @@ void MainWindow::setLightIntensityMenu() {
     }
 }
 
+
 void MainWindow::startNewTraining() {
     NewTrainingModal *modal = new NewTrainingModal();
     modal->openModal();
@@ -130,10 +138,12 @@ void MainWindow::startNewTraining() {
     connect(modal, &NewTrainingModal::paramsSelected, &m_globalsManager, &GlobalsManager::setTrainingParams);
 }
 
+
 void MainWindow::openResultsWidget() {
     ResultsWidget *resultsWidget = new ResultsWidget();
     resultsWidget->show();
 }
+
 
 void MainWindow::setupResultsTable() {
     QStringList headers = {"Result", "Date"};
@@ -144,6 +154,7 @@ void MainWindow::setupResultsTable() {
     ui->resultsTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->resultsTable->setSelectionMode(QAbstractItemView::SingleSelection);
 }
+
 
 void MainWindow::fillResultsTable(const Database::Result& resultData) {
     int newRow = ui->resultsTable->rowCount();
@@ -157,11 +168,13 @@ void MainWindow::fillResultsTable(const Database::Result& resultData) {
     ui->resultsTable->setItem(newRow, 1, dateItem);
 }
 
+
 void MainWindow::clearResultsTable() {
     if (ui->resultsTable->rowCount() > 0) {
         ui->resultsTable->setRowCount(0);
     }
 }
+
 
 void MainWindow::toggleSound() {
     QIcon unmuteIcon(":/images/images/unmute.png");
@@ -177,6 +190,7 @@ void MainWindow::toggleSound() {
 
     m_globalsManager.setMuteState(!isMuted);
 }
+
 
 void MainWindow::setSelectedParamsLabel(const std::pair<int, int>& selectedParams) {
     int selectedDistance = selectedParams.first;
@@ -203,6 +217,7 @@ void MainWindow::updateTargetImageSize() {
     }
 }
 
+
 void MainWindow::updateBackgroundImage(const cv::Mat &mat) {
     if (mat.empty()) {
         qWarning() << "Empty cv::Mat cannot be converted to QPixmap.";
@@ -214,6 +229,7 @@ void MainWindow::updateBackgroundImage(const cv::Mat &mat) {
 
     ui->targetImageLabel->setPixmap(pixmap);
 }
+
 
 void MainWindow::resetBackgroundImage() {
     QPixmap pixmap(":/images/images/background_10.png");

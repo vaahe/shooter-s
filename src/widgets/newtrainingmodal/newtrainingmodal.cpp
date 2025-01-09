@@ -1,4 +1,5 @@
 #include "newtrainingmodal.h"
+
 #include <QRadioButton>
 #include <QPushButton>
 #include <QVBoxLayout>
@@ -6,10 +7,12 @@
 #include <QGroupBox>
 #include <QMessageBox>
 
+
 NewTrainingModal::NewTrainingModal()
 {
     setupModal();
 }
+
 
 void NewTrainingModal::setupModal()
 {
@@ -61,6 +64,7 @@ void NewTrainingModal::setupModal()
     setFixedSize(300, 250);
 }
 
+
 void NewTrainingModal::approveSelections()
 {
     QString selectedDistance;
@@ -82,6 +86,7 @@ void NewTrainingModal::approveSelections()
 
     close();
 }
+
 
 void NewTrainingModal::cancelSelections()
 {

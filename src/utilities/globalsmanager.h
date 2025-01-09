@@ -5,6 +5,7 @@
 #include <opencv2/core/types.hpp>
 #include <QDebug>
 
+
 class GlobalsManager : public QObject {
     Q_OBJECT
 
@@ -14,45 +15,56 @@ public:
         return instance;
     }
 
+
     bool getMuteState() const {
         return m_isMuted;
     }
+
 
     void setMuteState(bool newState) {
         m_isMuted = newState;
     }
 
+
     cv::Point getCalibrationPoint() const {
         return m_calibrationPoint;
     }
+
 
     void setCalibrationPoint(const cv::Point& newCalbirationPoint) {
         m_calibrationPoint = newCalbirationPoint;
     }
 
+
     std::pair<int, int> getTrainingParams() const {
         return m_trainingParams;
     }
+
 
     void setTrainingParams(const std::pair<int, int>& newTrainingParams) {
         m_trainingParams = newTrainingParams;
     }
 
+
     cv::Size getTargetImageSize() const {
         return m_targetImageSize;
     }
+
 
     void setTargetImageSize(const cv::Size& newTargetImageSize) {
         m_targetImageSize = newTargetImageSize;
     }
 
+
     const QString getUserId() const {
         return m_userId;
     }
 
+
     void setUserId(const QString newUserId) {
         m_userId = newUserId;
     }
+
 
     GlobalsManager(const GlobalsManager&) = delete;
     GlobalsManager& operator=(const GlobalsManager&) = delete;

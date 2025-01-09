@@ -11,6 +11,7 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 
+
 class ResultsWidget : public QTableWidget
 {
     Q_OBJECT
@@ -20,17 +21,17 @@ public:
     void displayResults(const QList<Result>& results);
     void getResults(const QString& userId);
 
+
 private slots:
+    void setupUI();
     void onSearchClicked();
 
-private:
-    void setupUI();
 
+private:
     QTableWidget* m_table;
     QDateEdit* m_startDateEdit;
     QDateEdit* m_endDateEdit;
     QPushButton* m_searchButton;
-
     DatabaseManager* m_dbManager;
 };
 

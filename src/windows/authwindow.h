@@ -10,6 +10,7 @@
 #include <QLineEdit>
 #include <QToolButton>
 
+
 namespace Ui {
 class AuthWindow;
 }
@@ -21,6 +22,7 @@ class AuthWindow : public QWidget
 public:
     explicit AuthWindow(QWidget *parent = nullptr);
     ~AuthWindow();
+
 
 public slots:
     void onLogin();
@@ -39,11 +41,13 @@ public slots:
 
     void validateInput(QLineEdit* inputElement, const QString inputString);
 
+
 signals:
     void loginSucceeded();
     void loginFailed();
     void registerSucceeded();
     void registerFailed();
+
 
 private:
     Ui::AuthWindow *ui;

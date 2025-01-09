@@ -16,9 +16,11 @@
 #include <QMainWindow>
 #include <QActionGroup>
 
+
 QT_BEGIN_NAMESPACE
 namespace Ui {class MainWindow;}
 QT_END_NAMESPACE
+
 
 class MainWindow : public QMainWindow
 {
@@ -28,9 +30,11 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+
 public:
     void setLanguageMenu();
     void setLightIntensityMenu();
+
 
 public slots:
     void stopCalibrating();
@@ -43,8 +47,8 @@ public slots:
     void openResultsWidget();
 
     void setupResultsTable();
-    void fillResultsTable(const Database::Result& result);
     void clearResultsTable();
+    void fillResultsTable(const Database::Result& result);
 
     void toggleSound();
     void updateTargetImageSize();
@@ -53,8 +57,10 @@ public slots:
     void resetBackgroundImage();
     void updateBackgroundImage(const cv::Mat& frame);
 
+
 signals:
     void loggedOut();
+
 
 private:
     Ui::MainWindow *ui;

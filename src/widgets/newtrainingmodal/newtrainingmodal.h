@@ -10,6 +10,7 @@
 #include <QGroupBox>
 #include <QVariant>
 
+
 class NewTrainingModal : public BasicModal
 {
     Q_OBJECT
@@ -17,12 +18,15 @@ class NewTrainingModal : public BasicModal
 public:
     NewTrainingModal();
 
+
 private slots:
     void approveSelections();
     void cancelSelections();
 
+
 signals:
     void paramsSelected(const std::pair<int, int>& selectedParams);
+
 
 private:
     void setupModal();

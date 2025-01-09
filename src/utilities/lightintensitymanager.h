@@ -7,11 +7,13 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 
+
 class LightIntensityManager {
 public:
     static void changeLightIntensity(const QString language) {
         qDebug() << language.toLower();
     }
+
 
     static void enterLightIntensity() {
         QWidget *intensityWidget = new QWidget();

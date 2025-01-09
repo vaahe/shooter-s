@@ -1,6 +1,7 @@
 #include "authwindow.h"
 #include "ui_authwindow.h"
 
+
 AuthWindow::AuthWindow(QWidget *parent) : QWidget(parent), ui(new Ui::AuthWindow), m_dbManager(DatabaseManager::getInstance()) {
     ui->setupUi(this);
     loadLoginData();
@@ -24,6 +25,7 @@ AuthWindow::AuthWindow(QWidget *parent) : QWidget(parent), ui(new Ui::AuthWindow
     connect(ui->rememberMeCheckbox, &QCheckBox::stateChanged, this, &AuthWindow::onRememberMe);
 }
 
+
 AuthWindow::~AuthWindow() {
     delete ui;
 }
@@ -43,6 +45,7 @@ void AuthWindow::onLogin() {
     m_dbManager->signIn(user);
     m_globalsManager.setUserId(user.username);
 }
+
 
 void AuthWindow::onRegister() {
     const QString usernameInputStr = ui->registerUsernameInput->text().trimmed();
@@ -64,6 +67,7 @@ void AuthWindow::onRegister() {
     m_dbManager->signUp(user);
 }
 
+
 void AuthWindow::redirectToLogin() {
     resetRegisterValues();
     ui->stackedWidget->setCurrentIndex(0);
@@ -74,6 +78,7 @@ void AuthWindow::redirectToRegister() {
     ui->stackedWidget->setCurrentIndex(1);
 }
 
+
 void AuthWindow::resetLoginValues() {
     ui->loginUsernameInput->setText("");
     ui->loginPasswordInput->setText("");
@@ -81,6 +86,7 @@ void AuthWindow::resetLoginValues() {
     ui->loginUsernameInput->setStyleSheet("");
     ui->loginPasswordInput->setStyleSheet("");
 }
+
 
 void AuthWindow::resetRegisterValues() {
     ui->registerUsernameInput->setText("");
@@ -92,11 +98,13 @@ void AuthWindow::resetRegisterValues() {
     ui->registerRepeatPasswordInput->setStyleSheet("");
 }
 
+
 void AuthWindow::validateInput(QLineEdit *inputElement, const QString inputString) {
     if (inputString.isEmpty()) {
         inputElement->setStyleSheet("border: 1px solid red");
     }
 }
+
 
 void AuthWindow::saveLoginData() {
     const QString usernameInputStr = ui->loginUsernameInput->text().trimmed();
@@ -108,12 +116,14 @@ void AuthWindow::saveLoginData() {
     settings.setValue("password", passwordInputStr);
 }
 
+
 void AuthWindow::clearLoginData() {
     QSettings settings("ycrdi", "shooter-s");
     settings.remove("rememberMe");
     settings.remove("username");
     settings.remove("password");
 }
+
 
 void AuthWindow::loadLoginData() {
     QSettings settings("ycrdi", "shooter-s");
@@ -129,6 +139,7 @@ void AuthWindow::loadLoginData() {
         ui->loginPasswordInput->setText(savedPassword);
     }
 }
+
 
 void AuthWindow::onRememberMe() {
     if (ui->rememberMeCheckbox->isChecked()) {

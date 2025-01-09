@@ -1,11 +1,12 @@
 #ifndef LANGUAGEMANAGER_H
 #define LANGUAGEMANAGER_H
 
-#include <QActionGroup>
-#include <QApplication>
-#include <QTranslator>
 #include <QDebug>
 #include <QMessageBox>
+#include <QTranslator>
+#include <QActionGroup>
+#include <QApplication>
+
 
 class LanguageManager {
 public:
