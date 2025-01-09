@@ -2,6 +2,7 @@
 #define HTTPCLIENT_H
 
 #include <QUrl>
+#include <QTimer>
 #include <QObject>
 #include <QByteArray>
 #include <QNetworkReply>
