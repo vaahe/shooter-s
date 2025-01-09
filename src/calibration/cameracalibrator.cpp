@@ -1,18 +1,23 @@
 #include "cameracalibrator.h"
 
+
 CameraCalibrator::CameraCalibrator(QWidget *parent) : QWidget(parent), m_calibratorWorker(nullptr) {
     qDebug() << "Camera calibrator created";
 }
 
+
 CameraCalibrator::~CameraCalibrator() {
 
     qDebug() << "Camera calibrator destroyed";
+    cv::destroyAllWindows();
 }
+
 
 void CameraCalibrator::startCalibration() {
     if (m_calibratorWorker == nullptr) {
         m_calibratorWorker = new CameraCalibratorWorker(this);
         connect(m_calibratorWorker, &CameraCalibratorWorker::frameProcessed, this, &CameraCalibrator::showFrame);
+        connect(m_calibratorWorker, &CameraCalibratorWorker::shotTaken, this, &CameraCalibrator::stopCalibration);
     }
 
     if (!m_calibratorWorker->isRunning()) {
@@ -23,6 +28,7 @@ void CameraCalibrator::startCalibration() {
 
     qDebug() << "Worker running status after start: " << m_calibratorWorker->isRunning();
 }
+
 
 void CameraCalibrator::stopCalibration() {
     qDebug() << "Worker running status before stop: " << m_calibratorWorker->isRunning();
@@ -38,6 +44,7 @@ void CameraCalibrator::stopCalibration() {
     delete m_calibratorWorker;
     m_calibratorWorker = nullptr;
 }
+
 
 void CameraCalibrator::showFrame(const cv::Mat& frame) {
     cv::imshow("Frame", frame);

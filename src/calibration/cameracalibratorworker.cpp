@@ -1,8 +1,10 @@
 #include "cameracalibratorworker.h"
 
+
 CameraCalibratorWorker::CameraCalibratorWorker(QObject *parent) : QThread(parent), m_cap(nullptr), m_stop(false) {
     qDebug() << "Calibrator worker created";
 }
+
 
 CameraCalibratorWorker::~CameraCalibratorWorker() {
     stopCalibration();
@@ -10,6 +12,7 @@ CameraCalibratorWorker::~CameraCalibratorWorker() {
 
     qDebug() << "Calibrator worker destroyed";
 }
+
 
 bool CameraCalibratorWorker::initializeCamera() {
     if (m_cap == nullptr) {
@@ -56,11 +59,13 @@ void CameraCalibratorWorker::run() {
     }
 }
 
+
 void CameraCalibratorWorker::startCalibration() {
     if (!isRunning()) {
         start();
     }
 }
+
 
 void CameraCalibratorWorker::stopCalibration() {
     QMutexLocker locker(&m_mutex);
@@ -80,6 +85,7 @@ void CameraCalibratorWorker::stopCalibration() {
 
     locker.unlock();
 }
+
 
 cv::Mat CameraCalibratorWorker::cropFrame(const cv::Mat &frame) {
     cv::Mat grayFrame;
@@ -101,12 +107,14 @@ cv::Mat CameraCalibratorWorker::cropFrame(const cv::Mat &frame) {
     return croppedFrame;
 }
 
+
 cv::Mat CameraCalibratorWorker::resizeFrame(const cv::Mat &frame, cv::Size size) {
     cv::Mat resizedFrame;
 
     cv::resize(frame, resizedFrame, size);
     return resizedFrame;
 }
+
 
 int CameraCalibratorWorker::countWhitePixels(const cv::Mat& frame) {
     int whitePixelsCount = 0;
@@ -125,10 +133,13 @@ int CameraCalibratorWorker::countWhitePixels(const cv::Mat& frame) {
 
     if (whitePixelsCount > 40) {
         qDebug() << "krakoc";
+        emit shotTaken();
+        m_cap->read(frame);
     }
 
     return whitePixelsCount;
 }
+
 
 cv::Mat CameraCalibratorWorker::findMinMaxLoc(const cv::Mat &frame) {
     double minVal, maxVal;
@@ -143,6 +154,7 @@ cv::Mat CameraCalibratorWorker::findMinMaxLoc(const cv::Mat &frame) {
     qDebug() << "Max Loc:" << "(" << maxLoc.x << "," << maxLoc.y << ")" << ", Max Value:" << maxVal;
     return blackFrame;
 }
+
 
 cv::Mat CameraCalibratorWorker::undistortFrame(const cv::Mat &frame) {
     CalibrationResult calibrationResult = CalibrationResult::fromCalibrationFile(":/data/data/calibration_result.xml");

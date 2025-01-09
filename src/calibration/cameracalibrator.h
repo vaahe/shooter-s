@@ -2,8 +2,8 @@
 #define CAMERACALIBRATOR_H
 
 #include "src/calibration/cameracalibratorworker.h"
-
 #include <QWidget>
+
 
 class CameraCalibrator : public QWidget
 {
