@@ -17,6 +17,9 @@
 #include <opencv2/core.hpp>
 #include <opencv2/opencv.hpp>
 
+#include <tuple>
+
+
 class FrameProcessorWorker : public QThread
 {
     Q_OBJECT
@@ -36,10 +39,14 @@ public slots:
     void initializeJsonFile();
     bool initializeCamera();
 
+    QString getPoint(int x, int y);
+
     int countWhitePixels(const cv::Mat& frame);
     cv::Point findMaxLoc(const cv::Mat& frame);
+    int tresholdFrame(const cv::Mat& frame);
     cv::Mat undistortFrame(const cv::Mat& frame);
-    cv::Mat cropAndResizeFrameByCenter(const cv::Mat& frame, cv::Point centerPoint);
+    std::pair<cv::Mat, cv::Mat> cropAndResizeFrameByCenter(const cv::Mat& frame, cv::Point centerPoint);
+    cv::Mat cropFrame(const cv::Mat &frame, cv::Point cropPoint);
 
 signals:
     void processingStarted();
@@ -47,6 +54,7 @@ signals:
     void newResultAvailable(const Database::Result& result);
     void frameProcessed(const cv::Mat& frame);
     void trajectoryPointSent(const cv::Point& trajectoryPoint);
+    void shootingPointSent(const cv::Point& shootingPoint);
 
 protected:
     void run() override;
