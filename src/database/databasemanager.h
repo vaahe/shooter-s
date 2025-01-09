@@ -8,6 +8,7 @@
 #include <QMetaType>
 #include <QSqlDatabase>
 
+
 namespace Database {
     struct Result {
         QString result;
@@ -22,7 +23,6 @@ namespace Database {
         QString password;
     };
 }
-
 
 using Database::Result;
 using Database::User;
