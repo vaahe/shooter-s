@@ -1,8 +1,8 @@
-QT       += core gui sql multimedia
+QT       += core gui sql multimedia testlib
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-CONFIG += c++17 debug
+CONFIG += c++17
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -10,20 +10,21 @@ CONFIG += c++17 debug
 
 INCLUDEPATH += C:\Users\User\Downloads\opencv\build\include
 
-LIBS += C:\Users\User\Downloads\opencv\build\bin\libopencv_ml480.dll
-LIBS += C:\Users\User\Downloads\opencv\build\bin\libopencv_dnn480.dll
 LIBS += C:\Users\User\Downloads\opencv\build\bin\libopencv_core480.dll
-LIBS += C:\Users\User\Downloads\opencv\build\bin\libopencv_flann480.dll
-LIBS += C:\Users\User\Downloads\opencv\build\bin\libopencv_video480.dll
-LIBS += C:\Users\User\Downloads\opencv\build\bin\libopencv_photo480.dll
 LIBS += C:\Users\User\Downloads\opencv\build\bin\libopencv_highgui480.dll
+LIBS += C:\Users\User\Downloads\opencv\build\bin\libopencv_imgcodecs480.dll
 LIBS += C:\Users\User\Downloads\opencv\build\bin\libopencv_imgproc480.dll
+LIBS += C:\Users\User\Downloads\opencv\build\bin\libopencv_features2d480.dll
 LIBS += C:\Users\User\Downloads\opencv\build\bin\libopencv_calib3d480.dll
 LIBS += C:\Users\User\Downloads\opencv\build\bin\libopencv_videoio480.dll
-LIBS += C:\Users\User\Downloads\opencv\build\bin\libopencv_imgcodecs480.dll
-LIBS += C:\Users\User\Downloads\opencv\build\bin\libopencv_stitching480.dll
 LIBS += C:\Users\User\Downloads\opencv\build\bin\libopencv_objdetect480.dll
-LIBS += C:\Users\User\Downloads\opencv\build\bin\libopencv_features2d480.dll
+
+LIBS += C:\Users\User\Downloads\opencv\build\bin\libopencv_flann480.dll
+LIBS += C:\Users\User\Downloads\opencv\build\bin\libopencv_photo480.dll
+LIBS += C:\Users\User\Downloads\opencv\build\bin\libopencv_video480.dll
+LIBS += C:\Users\User\Downloads\opencv\build\bin\libopencv_stitching480.dll
+LIBS += C:\Users\User\Downloads\opencv\build\bin\libopencv_dnn480.dll
+LIBS += C:\Users\User\Downloads\opencv\build\bin\libopencv_ml480.dll
 LIBS += -lsetupapi
 
 SOURCES += \
@@ -35,11 +36,13 @@ SOURCES += \
     src/processing/frameprocessor.cpp \
     src/processing/frameprocessorworker.cpp \
     src/widgets/basicmodal.cpp \
+    src/widgets/manualIntensityWidget/manualintensitywidget.cpp \
     src/widgets/newtrainingmodal/newtrainingmodal.cpp \
     src/widgets/resultswidget/resultswidget.cpp \
     src/widgets/toolbutton/toolbutton.cpp \
     src/windows/mainwindow.cpp \
-    src/windows/authwindow.cpp
+    src/windows/authwindow.cpp \
+    tests/database/dbtest.cpp
 
 HEADERS += \
     src/calibration/cameracalibrator.h \
@@ -56,11 +59,13 @@ HEADERS += \
     src/utilities/lightintensitymanager.h \
     src/utilities/soundplayer.h \
     src/widgets/basicmodal.h \
+    src/widgets/manualIntensityWidget/manualintensitywidget.h \
     src/widgets/newtrainingmodal/newtrainingmodal.h \
     src/widgets/resultswidget/resultswidget.h \
     src/widgets/toolbutton/toolbutton.h \
     src/windows/mainwindow.h \
-    src/windows/authwindow.h
+    src/windows/authwindow.h \
+    tests/database/dbtest.h
 
 FORMS += \
     src/windows/mainwindow.ui \

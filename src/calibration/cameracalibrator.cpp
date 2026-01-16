@@ -1,14 +1,10 @@
 #include "cameracalibrator.h"
 
 
-CameraCalibrator::CameraCalibrator(QWidget *parent) : QWidget(parent), m_calibratorWorker(nullptr) {
-    qDebug() << "Camera calibrator created";
-}
+CameraCalibrator::CameraCalibrator(QWidget *parent) : QWidget(parent), m_calibratorWorker(nullptr) {}
 
 
 CameraCalibrator::~CameraCalibrator() {
-
-    qDebug() << "Camera calibrator destroyed";
     cv::destroyAllWindows();
 }
 
@@ -25,20 +21,15 @@ void CameraCalibrator::startCalibration() {
         emit calibrationStarted(true);
         qDebug() << "Calibration started";
     }
-
-    qDebug() << "Worker running status after start: " << m_calibratorWorker->isRunning();
 }
 
 
 void CameraCalibrator::stopCalibration() {
-    qDebug() << "Worker running status before stop: " << m_calibratorWorker->isRunning();
-
     if (m_calibratorWorker && m_calibratorWorker->isRunning()) {
         m_calibratorWorker->requestInterruption();
         m_calibratorWorker->wait();
 
         emit calibrationStopped(true);
-        qDebug() << "Calibration stopped";
     }
 
     delete m_calibratorWorker;

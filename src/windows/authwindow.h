@@ -5,11 +5,12 @@
 #include "src/utilities/globalsmanager.h"
 #include "src/widgets/toolbutton/toolbutton.h"
 
+#include <QMenu>
 #include <QWidget>
 #include <QSettings>
 #include <QLineEdit>
 #include <QToolButton>
-
+#include <QTranslator>
 
 namespace Ui {
 class AuthWindow;
@@ -28,6 +29,7 @@ public slots:
     void onLogin();
     void onRegister();
     void onRememberMe();
+    void onLoginSucceeded(const QString& userId);
 
     void saveLoginData();
     void clearLoginData();
@@ -39,8 +41,9 @@ public slots:
     void resetLoginValues();
     void resetRegisterValues();
 
+    void setLanguageMenu();
+    void switchLanguage(const QString &languageFilePath);
     void validateInput(QLineEdit* inputElement, const QString inputString);
-
 
 signals:
     void loginSucceeded();
@@ -51,7 +54,7 @@ signals:
 
 private:
     Ui::AuthWindow *ui;
-    DatabaseManager* m_dbManager;
+    DatabaseManager* m_dbManager = DatabaseManager::getInstance();
     GlobalsManager &m_globalsManager = GlobalsManager::getInstance();
 };
 

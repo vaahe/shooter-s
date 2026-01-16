@@ -11,21 +11,22 @@
 class LanguageManager {
 public:
     static void switchLanguage(const QString language) {
-        qDebug() << "Switching to language:" << language.toLower();
-
         QTranslator translator;
-        QString translationFile = QCoreApplication::applicationDirPath();
-        qDebug() << translationFile;
 
+        QMap<QString, QString> languageFiles = {
+            {"English", QCoreApplication::applicationDirPath() + "/translations/shooter_s_en_US.qm"},
+            {"Armenian", QCoreApplication::applicationDirPath() + "/translations/shooter_s_hy_AM.qm"}
+        };
+
+        if (!languageFiles.contains(language)) {
+            QMessageBox::warning(nullptr, QObject::tr("Language Error"), QObject::tr("Language '%1' not supported.").arg(language));
+            return;
+        }
+
+        QString translationFile = languageFiles.value(language);
         if (translator.load(translationFile)) {
             qApp->installTranslator(&translator);
-            qDebug() << "Language switched to" << language;
-
-            // Optionally, refresh UI elements (like retranslate UI)
-            QApplication::instance()->processEvents();
         } else {
-            qDebug() << "Translation file for" << language << "not found!";
-            // Optionally, show a message if translation file is not found
             QMessageBox::warning(nullptr, QObject::tr("Language Error"), QObject::tr("Translation file for '%1' not found.").arg(language));
         }
     }

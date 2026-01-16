@@ -13,8 +13,6 @@ FrameProcessorWorker::FrameProcessorWorker(QObject *parent) :
 FrameProcessorWorker::~FrameProcessorWorker() {
     stopProcessing();
     wait();
-
-    qDebug() << "Processor worker destroyed";
 }
 
 
@@ -64,6 +62,7 @@ void FrameProcessorWorker::processFrames() {
     if (whitePixelsCount > 40) {
         SoundPlayer *soundPlayer = new SoundPlayer();
         soundPlayer->playSound("qrc:/sounds/sounds/gunshot.wav");
+
         processResult(maxLoc);
 
         emit shootingPointSent(maxLoc);
@@ -74,14 +73,6 @@ void FrameProcessorWorker::processFrames() {
     }
 
     emit frameProcessed(resizedFrame);
-
-    // for (int i = 0; i < 3; ++i) {
-    // SoundPlayer *m_player;
-    // m_player->playSound("qrc:/sounds/sounds/gunshot.wav");
-
-    //     processResult();
-    //     QThread::msleep(2000);
-    // }
 }
 
 
@@ -102,7 +93,6 @@ cv::Point FrameProcessorWorker::findMaxLoc(const cv::Mat &frame) {
     cv::Point minLoc, maxLoc;
     cv::minMaxLoc(grayFrame, &minVal, &maxVal, &minLoc, &maxLoc);
 
-    qDebug() << "Max Loc:" << "(" << maxLoc.x << "," << maxLoc.y << ")" << ", Max Value:" << maxVal;
     emit trajectoryPointSent(maxLoc);
 
     return maxLoc;
@@ -110,11 +100,13 @@ cv::Point FrameProcessorWorker::findMaxLoc(const cv::Mat &frame) {
 
 
 void FrameProcessorWorker::processResult(const cv::Point shootingPoint) {
+    const QString userId = m_globalsManager.getUserId();
     std::pair<int, int> trainingParams = m_globalsManager.getTrainingParams();
+
     const auto [distance, imitationDistance] = trainingParams;
 
     Result resultData;
-    resultData.userId = "1";
+    resultData.userId = userId;
     resultData.distance = distance;
     resultData.result = getPoint(shootingPoint.x, shootingPoint.y);
     resultData.imitationDistance = imitationDistance;
@@ -122,8 +114,6 @@ void FrameProcessorWorker::processResult(const cv::Point shootingPoint) {
 
     m_db->insertResult(resultData);
     emit newResultAvailable(resultData);
-
-    qDebug() << "Result processed and emitted.";
 }
 
 
@@ -227,6 +217,11 @@ cv::Mat FrameProcessorWorker::undistortFrame(const cv::Mat &frame) {
 int FrameProcessorWorker::countWhitePixels(const cv::Mat& frame) {
     int whitePixelsCount = 0;
 
+    std::pair<int, int> trainingParams = m_globalsManager.getTrainingParams();
+
+    int distance = trainingParams.first;
+    int minimalLightIntensity = m_globalsManager.getLightIntensity();
+
     for (int y = 0; y < frame.rows; y++) {
         for (int x = 0; x < frame.cols; x++) {
             int pixelValue = frame.at<uchar>(y, x);
@@ -235,6 +230,22 @@ int FrameProcessorWorker::countWhitePixels(const cv::Mat& frame) {
                 whitePixelsCount++;
             }
         }
+    }
+
+    if (distance == 6 && minimalLightIntensity == 40) {
+        minimalLightIntensity -= 5;
+    }
+
+    if (whitePixelsCount > minimalLightIntensity) {
+        if (m_globalsManager.getMuteState()) {
+            SoundPlayer *soundPlayer = new SoundPlayer();
+            soundPlayer->playSound("qrc:/sounds/sounds/gunshot.wav");
+
+            delete soundPlayer;
+            soundPlayer = nullptr;
+        }
+
+        m_cap->read(frame);
     }
 
     return whitePixelsCount;
@@ -329,20 +340,17 @@ int FrameProcessorWorker::tresholdFrame(const cv::Mat &frame) {
     }
 
     cv::Mat irMask;
-    double irThreshold = 253; // Adjust based on IR light intensity
+    double irThreshold = 253;
     cv::threshold(grayFrame, irMask, irThreshold, 255, cv::THRESH_BINARY);
 
-    // Count the number of white pixels in the IR mask
     int irPixelCount = cv::countNonZero(irMask);
 
-    // Emit or process IR detection result
-    if (irPixelCount > 1000) { // Adjust threshold for pixel area
+    if (irPixelCount > 1000) {
         qDebug() << "IR light detected. Pixel area:" << irPixelCount;
     }
 
     int currentPixelCount = cv::countNonZero(irMask);
 
-    // Check if the bright region size increased significantly
     if (currentPixelCount > previousPixelCount * 1.5 && currentPixelCount > 4000) {
         qDebug() << "Shot detected. IR light pixel area increased.";
         return currentPixelCount;

@@ -58,9 +58,6 @@ void DatabaseManager::createTable(const QString &tableName, const QString &table
     if (!query.exec()) {
         qWarning() << "Failed to create table:" << query.lastError().text();
     }
-    // else {
-        // qDebug() << QString("Table %1 created successfully or already exists.").arg(tableName);
-    // }
 }
 
 
@@ -123,9 +120,8 @@ void DatabaseManager::signIn(const User& user) {
     }
 
     if (query.next()) {
-        qDebug() << "line 116:" << query.value(0);
-
-        emit loginSucceeded();
+        const QString userId = query.value(0).toString();
+        emit loginSucceeded(userId);
     } else {
         emit loginFailed();
     }

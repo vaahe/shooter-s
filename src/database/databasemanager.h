@@ -6,6 +6,7 @@
 #include <QSqlError>
 #include <QDateTime>
 #include <QMetaType>
+#include <QSqlRecord>
 #include <QSqlDatabase>
 
 
@@ -54,7 +55,7 @@ public slots:
 
 signals:
     void loginFailed();
-    void loginSucceeded();
+    void loginSucceeded(const QString& userId);
 
     void registerFailed();
     void registerSucceeded();

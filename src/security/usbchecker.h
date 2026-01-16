@@ -4,12 +4,13 @@
 #include "windows.h"
 #include "setupapi.h"
 
+#include <iostream>
+
 #define FlasfBaseContainerID L"{33000acd-5b54-5829-9321-51583167fa9b}"
 #define SPDRP_BASE_CONTAINERID (0x00000024)  // Base ContainerID (R)
 
 
-bool checkDevice()
-{
+inline bool checkDevice() {
     DWORD DataT;
     DWORD ErrorCode;
     HDEVINFO deviceInfoList;

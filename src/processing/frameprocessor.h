@@ -1,6 +1,7 @@
 #ifndef FRAMEPROCESSOR_H
 #define FRAMEPROCESSOR_H
 
+#include "src/utilities/globalsmanager.h"
 #include "src/database/databasemanager.h"
 #include "src/processing/frameprocessorworker.h"
 #include <QWidget>
@@ -38,6 +39,7 @@ private:
     std::vector<cv::Point> m_shootingPoints;
     cv::Mat m_imageFrame;
     cv::Scalar m_lineColor;
+    GlobalsManager &m_globalsManager = GlobalsManager::getInstance();
 };
 
 #endif // FRAMEPROCESSOR_H

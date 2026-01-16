@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "src/security/usbchecker.h"
 #include "src/communication/httpclient.h"
 #include "src/utilities/globalsmanager.h"
 #include "src/utilities/languagemanager.h"
@@ -9,11 +10,13 @@
 #include "src/utilities/lightintensitymanager.h"
 #include "src/widgets/resultswidget/resultswidget.h"
 #include "src/widgets/newtrainingmodal/newtrainingmodal.h"
+#include "src/widgets/manualIntensityWidget/manualintensitywidget.h"
 
 #include <QTimer>
 #include <QImage>
 #include <QPainter>
 #include <QMainWindow>
+#include <QMessageBox>
 #include <QActionGroup>
 
 
@@ -35,6 +38,8 @@ public:
     void setLanguageMenu();
     void setLightIntensityMenu();
 
+    void switchLanguage(const QString& languageFilePath);
+
 
 public slots:
     void stopCalibrating();
@@ -52,6 +57,7 @@ public slots:
 
     void toggleSound();
     void updateTargetImageSize();
+    void openManualIntensityWidget();
     void setSelectedParamsLabel(const std::pair<int, int>& selectedParams);
 
     void resetBackgroundImage();
@@ -60,6 +66,7 @@ public slots:
 
 signals:
     void loggedOut();
+    void languageChanged();
 
 
 private:

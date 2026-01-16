@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     // if (!checkDevice()) {
-    //     QMessageBox::warning(nullptr, "Flash key is not found", "Insert the correct flash", "Ok");
+    //     QMessageBox::warning(nullptr, "Flash key is not found", "Insert the correct flash", QMessageBox::Ok);
     //     return -1;
     // }
 
@@ -21,14 +21,15 @@ int main(int argc, char *argv[])
     qRegisterMetaType<const Result&>("Result&");
 
     DatabaseManager *dbManager = DatabaseManager::getInstance();
+
     dbManager->connect();
 
     QStackedWidget stackedWidget;
     AuthWindow authWindow;
     MainWindow mainWindow;
 
-    authWindow.setWindowTitle("auth window");
-    mainWindow.setWindowTitle("main window");
+    authWindow.setWindowTitle("Shooter S");
+    mainWindow.setWindowTitle("Shooter S");
 
     stackedWidget.addWidget(&mainWindow);
     stackedWidget.addWidget(&authWindow);

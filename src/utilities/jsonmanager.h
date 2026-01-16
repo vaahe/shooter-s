@@ -37,7 +37,6 @@ public:
         }
 
         m_isFileReady = true;
-        qDebug() << "File opened successfully";
 
         m_jsonObject = readFromJson();
         if (!m_jsonObject.isEmpty()) {
@@ -49,7 +48,6 @@ public:
 
 
     QString findKey(const cv::Point shootingPoint) {
-        qDebug() << "inside function";
         if (!m_isFileReady) {
             return "0";
         }
@@ -68,7 +66,6 @@ public:
                 int y = pointObject["y"].toInt();
 
                 if (x == shootingPoint.x && y == shootingPoint.y) {
-                    qDebug() << "key found:" << key;
                     return reformatKey(key);
                 }
             }

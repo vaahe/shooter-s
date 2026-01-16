@@ -6,51 +6,66 @@
     <message>
         <location filename="../src/windows/authwindow.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Form</translation>
     </message>
     <message>
-        <location filename="../src/windows/authwindow.ui" line="34"/>
-        <location filename="../src/windows/authwindow.ui" line="123"/>
+        <location filename="../src/windows/authwindow.ui" line="85"/>
+        <location filename="../src/windows/authwindow.ui" line="253"/>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Password</translation>
     </message>
     <message>
-        <location filename="../src/windows/authwindow.ui" line="56"/>
-        <location filename="../src/windows/authwindow.ui" line="69"/>
+        <location filename="../src/windows/authwindow.ui" line="107"/>
+        <location filename="../src/windows/authwindow.ui" line="137"/>
         <source>Login</source>
-        <translation type="unfinished"></translation>
+        <translation>Login</translation>
     </message>
     <message>
-        <location filename="../src/windows/authwindow.ui" line="79"/>
+        <location filename="../src/windows/authwindow.ui" line="121"/>
         <source>Don&apos;t have an account? Register</source>
-        <translation type="unfinished"></translation>
+        <translation>Don&apos;t have an account? Register</translation>
     </message>
     <message>
-        <location filename="../src/windows/authwindow.ui" line="88"/>
-        <location filename="../src/windows/authwindow.ui" line="179"/>
+        <location filename="../src/windows/authwindow.ui" line="68"/>
+        <location filename="../src/windows/authwindow.ui" line="236"/>
         <source>Username</source>
-        <translation type="unfinished"></translation>
+        <translation>Username</translation>
     </message>
     <message>
-        <location filename="../src/windows/authwindow.ui" line="100"/>
+        <location filename="../src/windows/authwindow.ui" line="114"/>
         <source>Remember me</source>
-        <translation type="unfinished"></translation>
+        <translation>Remember me</translation>
     </message>
     <message>
-        <location filename="../src/windows/authwindow.ui" line="111"/>
-        <location filename="../src/windows/authwindow.ui" line="145"/>
+        <location filename="../src/windows/authwindow.ui" line="167"/>
+        <location filename="../src/windows/authwindow.ui" line="183"/>
         <source>Register</source>
-        <translation type="unfinished"></translation>
+        <translation>Register</translation>
     </message>
     <message>
-        <location filename="../src/windows/authwindow.ui" line="152"/>
+        <location filename="../src/windows/authwindow.ui" line="211"/>
         <source>Already have an account? Login</source>
-        <translation type="unfinished"></translation>
+        <translation>Already have an account? Login</translation>
     </message>
     <message>
-        <location filename="../src/windows/authwindow.ui" line="161"/>
+        <location filename="../src/windows/authwindow.ui" line="195"/>
         <source>Repeat password</source>
-        <translation type="unfinished"></translation>
+        <translation>Repeat password</translation>
+    </message>
+    <message>
+        <location filename="../src/windows/authwindow.cpp" line="160"/>
+        <source>Language</source>
+        <translation>Language</translation>
+    </message>
+    <message>
+        <location filename="../src/windows/authwindow.cpp" line="163"/>
+        <source>English</source>
+        <translation>English</translation>
+    </message>
+    <message>
+        <location filename="../src/windows/authwindow.cpp" line="164"/>
+        <source>Armenian</source>
+        <translation>Armenian</translation>
     </message>
 </context>
 <context>
@@ -58,107 +73,232 @@
     <message>
         <location filename="../src/windows/mainwindow.ui" line="14"/>
         <source>MainWindow</source>
-        <translation type="unfinished"></translation>
+        <translation>Shooter-S</translation>
     </message>
     <message>
-        <location filename="../src/windows/mainwindow.ui" line="23"/>
+        <location filename="../src/windows/mainwindow.ui" line="71"/>
         <source>Logout</source>
         <translation>Logout</translation>
     </message>
     <message>
-        <location filename="../src/windows/mainwindow.ui" line="30"/>
+        <location filename="../src/windows/mainwindow.ui" line="23"/>
         <source>Start training</source>
         <translation>Start training</translation>
     </message>
     <message>
-        <location filename="../src/windows/mainwindow.ui" line="40"/>
+        <location filename="../src/windows/mainwindow.ui" line="33"/>
         <source>Stop training</source>
         <translation>Stop training</translation>
     </message>
     <message>
-        <location filename="../src/windows/mainwindow.ui" line="47"/>
+        <location filename="../src/windows/mainwindow.ui" line="40"/>
         <source>Start calibration</source>
         <translation>Start calibration</translation>
     </message>
     <message>
-        <location filename="../src/windows/mainwindow.ui" line="57"/>
+        <location filename="../src/windows/mainwindow.ui" line="50"/>
         <source>Stop calibration</source>
         <translation>Stop calibration</translation>
     </message>
     <message>
-        <location filename="../src/windows/mainwindow.ui" line="64"/>
+        <location filename="../src/windows/mainwindow.ui" line="57"/>
         <source>New training</source>
         <translation>New training</translation>
     </message>
     <message>
-        <location filename="../src/windows/mainwindow.ui" line="71"/>
+        <location filename="../src/windows/mainwindow.ui" line="64"/>
         <source>Results</source>
         <translation>Results</translation>
     </message>
     <message>
         <location filename="../src/windows/mainwindow.ui" line="180"/>
         <source>Additional</source>
-        <translation type="unfinished"></translation>
+        <translation>Additional</translation>
     </message>
     <message>
         <location filename="../src/windows/mainwindow.ui" line="184"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Settings</translation>
     </message>
     <message>
         <location filename="../src/windows/mainwindow.ui" line="191"/>
         <source>Light intensity</source>
-        <translation type="unfinished"></translation>
+        <translation>Light intensity</translation>
     </message>
     <message>
-        <location filename="../src/windows/mainwindow.ui" line="200"/>
+        <location filename="../src/windows/mainwindow.cpp" line="109"/>
         <source>Language</source>
-        <translation type="unfinished"></translation>
+        <translation>Language</translation>
+    </message>
+    <message>
+        <location filename="../src/windows/mainwindow.ui" line="207"/>
+        <source>Help</source>
+        <translation>Help</translation>
     </message>
     <message>
         <location filename="../src/windows/mainwindow.ui" line="215"/>
-        <source>Help</source>
-        <translation type="unfinished"></translation>
+        <source>Show additional windows</source>
+        <translation>Show additional windows</translation>
     </message>
     <message>
         <location filename="../src/windows/mainwindow.ui" line="223"/>
-        <source>Show additional windows</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/windows/mainwindow.ui" line="231"/>
         <source>Enable sound</source>
-        <translation type="unfinished"></translation>
+        <translation>Enable sound</translation>
     </message>
     <message>
-        <location filename="../src/windows/mainwindow.ui" line="239"/>
+        <location filename="../src/windows/mainwindow.ui" line="234"/>
         <source>Weak</source>
-        <translation type="unfinished"></translation>
+        <translation>Weak</translation>
     </message>
     <message>
-        <location filename="../src/windows/mainwindow.ui" line="247"/>
+        <location filename="../src/windows/mainwindow.ui" line="237"/>
+        <source>60</source>
+        <translation>60</translation>
+    </message>
+    <message>
+        <location filename="../src/windows/mainwindow.ui" line="245"/>
         <source>Average</source>
-        <translation type="unfinished"></translation>
+        <translation>Average</translation>
     </message>
     <message>
-        <location filename="../src/windows/mainwindow.ui" line="255"/>
+        <location filename="../src/windows/mainwindow.ui" line="248"/>
+        <source>45</source>
+        <translation>45</translation>
+    </message>
+    <message>
+        <location filename="../src/windows/mainwindow.ui" line="256"/>
         <source>Strong</source>
-        <translation type="unfinished"></translation>
+        <translation>Strong</translation>
     </message>
     <message>
-        <location filename="../src/windows/mainwindow.ui" line="260"/>
+        <location filename="../src/windows/mainwindow.ui" line="259"/>
+        <source>40</source>
+        <translation>40</translation>
+    </message>
+    <message>
+        <location filename="../src/windows/mainwindow.ui" line="264"/>
         <source>Manual input</source>
-        <translation type="unfinished"></translation>
+        <translation>Manual input</translation>
     </message>
     <message>
-        <location filename="../src/windows/mainwindow.ui" line="268"/>
+        <location filename="../src/windows/mainwindow.ui" line="272"/>
         <source>Armenian</source>
+        <translation>Armenian</translation>
+    </message>
+    <message>
+        <location filename="../src/windows/mainwindow.ui" line="283"/>
+        <source>English</source>
+        <translation>English</translation>
+    </message>
+    <message>
+        <source>Flash key is not found</source>
+        <translation type="vanished">Flash key is not found</translation>
+    </message>
+    <message>
+        <source>Insert the correct flash</source>
+        <translation type="vanished">Insert the correct flash</translation>
+    </message>
+</context>
+<context>
+    <name>ManualIntensityWidget</name>
+    <message>
+        <location filename="../src/widgets/manualIntensityWidget/manualintensitywidget.cpp" line="5"/>
+        <source>Set manual intensity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/windows/mainwindow.ui" line="279"/>
-        <source>English</source>
+        <location filename="../src/widgets/manualIntensityWidget/manualintensitywidget.cpp" line="11"/>
+        <source>Manual Intensity Control</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/manualIntensityWidget/manualintensitywidget.cpp" line="15"/>
+        <source>Current intensity: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/manualIntensityWidget/manualintensitywidget.cpp" line="21"/>
+        <source>Enter intensity...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/manualIntensityWidget/manualintensitywidget.cpp" line="24"/>
+        <source>Set Intensity</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <location filename="../src/utilities/languagemanager.h" line="22"/>
+        <location filename="../src/utilities/languagemanager.h" line="30"/>
+        <source>Language Error</source>
+        <translation>Language Error</translation>
+    </message>
+    <message>
+        <location filename="../src/utilities/languagemanager.h" line="22"/>
+        <source>Language &apos;%1&apos; not supported.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/utilities/languagemanager.h" line="30"/>
+        <source>Translation file for &apos;%1&apos; not found.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ResultsWidget</name>
+    <message>
+        <location filename="../src/widgets/resultswidget/resultswidget.cpp" line="9"/>
+        <location filename="../src/widgets/resultswidget/resultswidget.cpp" line="116"/>
+        <source>Search</source>
+        <translation>Search</translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/resultswidget/resultswidget.cpp" line="14"/>
+        <location filename="../src/widgets/resultswidget/resultswidget.cpp" line="115"/>
+        <source>Shooter S: Results</source>
+        <translation>Shooter S: Results</translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/resultswidget/resultswidget.cpp" line="60"/>
+        <source>Invalid Date Range</source>
+        <translation>Invalid date range</translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/resultswidget/resultswidget.cpp" line="60"/>
+        <source>Please ensure that both start and end dates are valid.</source>
+        <translation>Please ensure that both start and end dates are valid.</translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/resultswidget/resultswidget.cpp" line="76"/>
+        <source>No data found</source>
+        <translation>No data found</translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/resultswidget/resultswidget.cpp" line="118"/>
+        <source>Result</source>
+        <translation>Result</translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/resultswidget/resultswidget.cpp" line="118"/>
+        <source>User ID</source>
+        <translation>User ID</translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/resultswidget/resultswidget.cpp" line="118"/>
+        <source>Distance</source>
+        <translation>Distance</translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/resultswidget/resultswidget.cpp" line="118"/>
+        <source>Imitation Distance</source>
+        <translation>Imitation distance</translation>
+    </message>
+    <message>
+        <location filename="../src/widgets/resultswidget/resultswidget.cpp" line="118"/>
+        <source>Date</source>
+        <translation>Date</translation>
     </message>
 </context>
 </TS>

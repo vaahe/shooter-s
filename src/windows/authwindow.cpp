@@ -2,9 +2,10 @@
 #include "ui_authwindow.h"
 
 
-AuthWindow::AuthWindow(QWidget *parent) : QWidget(parent), ui(new Ui::AuthWindow), m_dbManager(DatabaseManager::getInstance()) {
+AuthWindow::AuthWindow(QWidget *parent) : QWidget(parent), ui(new Ui::AuthWindow) {
     ui->setupUi(this);
     loadLoginData();
+    setLanguageMenu();
 
     connect(ui->loginBtn, &QPushButton::clicked, this, &AuthWindow::onLogin);
     connect(ui->registerBtn, &QPushButton::clicked, this, &AuthWindow::onRegister);
@@ -16,6 +17,7 @@ AuthWindow::AuthWindow(QWidget *parent) : QWidget(parent), ui(new Ui::AuthWindow
 
     connect(m_dbManager, &DatabaseManager::loginFailed, this, &AuthWindow::loginFailed);
     connect(m_dbManager, &DatabaseManager::loginSucceeded, this, &AuthWindow::loginSucceeded);
+    connect(m_dbManager, &DatabaseManager::loginSucceeded, this, &AuthWindow::onLoginSucceeded);
     connect(m_dbManager, &DatabaseManager::loginSucceeded, this, &AuthWindow::resetLoginValues);
 
     connect(m_dbManager, &DatabaseManager::registerFailed, this, &AuthWindow::registerFailed);
@@ -43,7 +45,10 @@ void AuthWindow::onLogin() {
     user.password = passwordInputStr;
 
     m_dbManager->signIn(user);
-    m_globalsManager.setUserId(user.username);
+}
+
+void AuthWindow::onLoginSucceeded(const QString& userId) {
+    m_globalsManager.setUserId(userId);
 }
 
 
@@ -147,4 +152,50 @@ void AuthWindow::onRememberMe() {
     } else {
         clearLoginData();
     }
+}
+
+
+void AuthWindow::setLanguageMenu()
+{
+    QPushButton *languageButton = new QPushButton(tr("Language"), this);
+    QMenu *languageMenu = new QMenu(this);
+
+    QAction *englishAction = new QAction(tr("English"), this);
+    QAction *armenianAction = new QAction(tr("Armenian"), this);
+
+    languageMenu->addAction(englishAction);
+    languageMenu->addAction(armenianAction);
+
+    languageButton->setMenu(languageMenu);
+
+    QLayout *existingLayout = layout();
+    if (!existingLayout) {
+        QVBoxLayout *newLayout = new QVBoxLayout(this);
+        newLayout->addWidget(languageButton, 0, Qt::AlignCenter); // Center the button
+        setLayout(newLayout);
+    } else {
+        QVBoxLayout *vLayout = qobject_cast<QVBoxLayout *>(existingLayout);
+        if (vLayout) {
+            vLayout->addWidget(languageButton, 0, Qt::AlignCenter);
+        }
+    }
+
+    connect(englishAction, &QAction::triggered, this, [this]() { switchLanguage(QCoreApplication::applicationDirPath() + "/translations/shooter_s_en_US.qm"); });
+    connect(armenianAction, &QAction::triggered, this, [this]() { switchLanguage(QCoreApplication::applicationDirPath() + "/translations/shooter_s_hy_AM.qm"); });
+}
+
+void AuthWindow::switchLanguage(const QString &languageFilePath)
+{
+    qDebug() << languageFilePath;
+    static QTranslator translator;
+
+    qApp->removeTranslator(&translator);
+
+    if (translator.load(languageFilePath)) {
+        qApp->installTranslator(&translator);
+    } else {
+        qDebug() << "Failed to load translation file:" << languageFilePath;
+    }
+
+    ui->retranslateUi(this);
 }

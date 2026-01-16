@@ -8,7 +8,6 @@ FrameProcessor::FrameProcessor(QWidget *parent) :
     m_imageFrame(cv::Mat()),
     m_lineColor(cv::Scalar(0, 255, 0))
 {
-    qDebug() << "Frame processor created";
     initializeImageFrame();
 
     connect(m_processorWorker, &FrameProcessorWorker::frameProcessed, this, &FrameProcessor::showImageFrame);
@@ -18,10 +17,7 @@ FrameProcessor::FrameProcessor(QWidget *parent) :
 }
 
 
-FrameProcessor::~FrameProcessor() {
-
-    qDebug() << "Frame processor destroyed";
-}
+FrameProcessor::~FrameProcessor() {}
 
 
 void FrameProcessor::startProcessing() {
@@ -30,20 +26,15 @@ void FrameProcessor::startProcessing() {
         emit processingStarted(true);
         qDebug() << "Processing started";
     }
-
-    qDebug() << "Processing Worker running status after start: " << m_processorWorker->isRunning();
 }
 
 
 void FrameProcessor::stopProcessing() {
-    qDebug() << "Processing Worker running status before stop: " << m_processorWorker->isRunning();
-
     if (m_processorWorker && m_processorWorker->isRunning()) {
         m_processorWorker->requestInterruption();
         m_processorWorker->wait();
 
         emit processingStopped(true);
-        qDebug() << "Processing stopped";
     }
 
     delete m_processorWorker;
@@ -93,6 +84,15 @@ void FrameProcessor::drawTrajectoryPointsOnImageFrame() {
 
 
 void FrameProcessor::drawShootingPointOnImageFrame() {
+    auto [distance, imitationDistance] = m_globalsManager.getTrainingParams();
+    int circleRadius;
+
+    if (imitationDistance == 25) {
+        circleRadius = 4;
+    } else if (imitationDistance == 10) {
+        circleRadius = 7;
+    }
+
     if (m_imageFrame.empty()) {
         qWarning() << "Image frame is empty, cannot draw shooting point.";
         return;
@@ -101,7 +101,7 @@ void FrameProcessor::drawShootingPointOnImageFrame() {
     if (m_shootingPoints.size() > 0) {
         std::vector<cv::Point>::iterator it = m_shootingPoints.begin();
 
-        cv::circle(m_imageFrame, *it, 7, cv::Scalar(255, 0, 0), -1);
+        cv::circle(m_imageFrame, *it, circleRadius, cv::Scalar(255, 0, 0), -1);
         m_shootingPoints.erase(it);
     }
 
@@ -112,7 +112,9 @@ void FrameProcessor::drawShootingPointOnImageFrame() {
 
 
 void FrameProcessor::initializeImageFrame() {
-    QString filePath = QString(":/images/images/background_10.png");
+    auto [distance, imitationDistance] = m_globalsManager.getTrainingParams();
+
+    QString filePath = QString(":/images/images/background_%1.png").arg(imitationDistance);
 
     QFile file(filePath);
     if(!file.open(QIODevice::ReadOnly)) {

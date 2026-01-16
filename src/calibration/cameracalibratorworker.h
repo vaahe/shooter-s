@@ -1,12 +1,14 @@
 #ifndef CAMERACALIBRATORWORKER_H
 #define CAMERACALIBRATORWORKER_H
 
+#include "src/utilities/soundplayer.h"
 #include "src/utilities/globalsmanager.h"
 #include "src/utilities/calibrationresult.h"
 
 #include <QDebug>
 #include <QMutex>
 #include <QThread>
+#include <QMessageBox>
 #include <QMutexLocker>
 #include <opencv2/core.hpp>
 #include <opencv2/opencv.hpp>

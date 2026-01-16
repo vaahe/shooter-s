@@ -2,14 +2,16 @@
 #define RESULTSWIDGET_H
 
 #include "src/database/databasemanager.h"
+#include "src/utilities/globalsmanager.h"
 
 #include <QList>
 #include <QDateEdit>
 #include <QPushButton>
 #include <QHeaderView>
-#include <QTableWidget>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QMessageBox>
+#include <QTableWidget>
 
 
 class ResultsWidget : public QTableWidget
@@ -19,7 +21,8 @@ class ResultsWidget : public QTableWidget
 public:
     explicit ResultsWidget(QWidget* parent = nullptr);
     void displayResults(const QList<Result>& results);
-    void getResults(const QString& userId);
+    void getResults();
+    void retranslateUI();
 
 
 private slots:
@@ -33,6 +36,7 @@ private:
     QDateEdit* m_endDateEdit;
     QPushButton* m_searchButton;
     DatabaseManager* m_dbManager;
+    GlobalsManager &m_globalsManager = GlobalsManager::getInstance();
 };
 
 #endif // RESULTSWIDGET_H
