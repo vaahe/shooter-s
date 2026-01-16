@@ -1,15 +1,18 @@
 #ifndef CAMERACALIBRATORWORKER_H
 #define CAMERACALIBRATORWORKER_H
 
+#include "src/utilities/soundplayer.h"
 #include "src/utilities/globalsmanager.h"
 #include "src/utilities/calibrationresult.h"
 
 #include <QDebug>
 #include <QMutex>
 #include <QThread>
+#include <QMessageBox>
 #include <QMutexLocker>
 #include <opencv2/core.hpp>
 #include <opencv2/opencv.hpp>
+
 
 class CameraCalibratorWorker : public QThread
 {
@@ -23,18 +26,19 @@ public slots:
     void startCalibration();
     void stopCalibration();
 
-    int countWhitePixels(const cv::Mat& frame);
     cv::Mat cropFrame(const cv::Mat& frame);
     cv::Mat findMinMaxLoc(const cv::Mat& frame);
-    cv::Mat resizeFrame(const cv::Mat& frame, cv::Size size);
     cv::Mat undistortFrame(const cv::Mat& frame);
+    cv::Mat resizeFrame(const cv::Mat& frame, cv::Size size);
 
     bool initializeCamera();
+    int countWhitePixels(const cv::Mat& frame);
 
 signals:
     void calibrationStarted();
     void calibrationFinished();
     void frameProcessed(const cv::Mat& frame);
+    void shotTaken();
 
 protected:
     void run() override;

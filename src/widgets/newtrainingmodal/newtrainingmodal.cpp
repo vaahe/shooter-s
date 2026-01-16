@@ -1,4 +1,5 @@
 #include "newtrainingmodal.h"
+
 #include <QRadioButton>
 #include <QPushButton>
 #include <QVBoxLayout>
@@ -6,13 +7,13 @@
 #include <QGroupBox>
 #include <QMessageBox>
 
-NewTrainingModal::NewTrainingModal()
-{
+
+NewTrainingModal::NewTrainingModal() {
     setupModal();
 }
 
-void NewTrainingModal::setupModal()
-{
+
+void NewTrainingModal::setupModal() {
     distance3m = new QRadioButton("3m");
     distance4m = new QRadioButton("4m");
     distance5m = new QRadioButton("5m");
@@ -61,8 +62,8 @@ void NewTrainingModal::setupModal()
     setFixedSize(300, 250);
 }
 
-void NewTrainingModal::approveSelections()
-{
+
+void NewTrainingModal::approveSelections() {
     QString selectedDistance;
     if (distance3m->isChecked()) selectedDistance = "3m";
     else if (distance4m->isChecked()) selectedDistance = "4m";
@@ -83,7 +84,7 @@ void NewTrainingModal::approveSelections()
     close();
 }
 
-void NewTrainingModal::cancelSelections()
-{
+
+void NewTrainingModal::cancelSelections() {
     close();
 }

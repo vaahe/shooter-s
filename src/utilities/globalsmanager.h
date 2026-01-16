@@ -1,9 +1,10 @@
 #ifndef GLOBALSMANAGER_H
 #define GLOBALSMANAGER_H
 
+#include <QDebug>
 #include <QObject>
 #include <opencv2/core/types.hpp>
-#include <QDebug>
+
 
 class GlobalsManager : public QObject {
     Q_OBJECT
@@ -14,6 +15,7 @@ public:
         return instance;
     }
 
+
     bool getMuteState() const {
         return m_isMuted;
     }
@@ -22,6 +24,7 @@ public:
         m_isMuted = newState;
     }
 
+
     cv::Point getCalibrationPoint() const {
         return m_calibrationPoint;
     }
@@ -29,6 +32,7 @@ public:
     void setCalibrationPoint(const cv::Point& newCalbirationPoint) {
         m_calibrationPoint = newCalbirationPoint;
     }
+
 
     std::pair<int, int> getTrainingParams() const {
         return m_trainingParams;
@@ -46,6 +50,7 @@ public:
         m_targetImageSize = newTargetImageSize;
     }
 
+
     const QString getUserId() const {
         return m_userId;
     }
@@ -53,6 +58,17 @@ public:
     void setUserId(const QString newUserId) {
         m_userId = newUserId;
     }
+
+
+    int getLightIntensity() const {
+        return m_lightIntensity;
+    }
+
+    void setLightIntensity(const int newLightIntensity) {
+        qDebug() << newLightIntensity;
+        m_lightIntensity = newLightIntensity;
+    }
+
 
     GlobalsManager(const GlobalsManager&) = delete;
     GlobalsManager& operator=(const GlobalsManager&) = delete;
@@ -64,6 +80,7 @@ private:
     std::pair<int, int> m_trainingParams = {3, 10};
     cv::Size m_targetImageSize;
     QString m_userId;
+    int m_lightIntensity = 60;
 };
 
 #endif // GLOBALSMANAGER_H

@@ -6,6 +6,7 @@
         <file>images/mute.png</file>
         <file>images/unmute.png</file>
         <file>images/favicon.ico</file>
+        <file>images/background_25.png</file>
     </qresource>
     <qresource prefix="/sounds">
         <file>sounds/gunshot.wav</file>
@@ -14,5 +15,9 @@
         <file>data/pointsMatrix_10.json</file>
         <file>data/pointsMatrix_25.json</file>
         <file>data/calibration_result.xml</file>
+    </qresource>
+    <qresource prefix="/translations">
+        <file>data/shooter_s_en_US.qm</file>
+        <file>data/shooter_s_hy_AM.qm</file>
     </qresource>
 </RCC>

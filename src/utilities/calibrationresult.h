@@ -5,11 +5,13 @@
 #include <QFile>
 #include <QDebug>
 
+
 class CalibrationResult {
 public:
     CalibrationResult(cv::Mat cameraMatrix, cv::Mat distortionCoefficients) :
         m_cameraMatrix(cameraMatrix),
         m_distortionCoefficients(distortionCoefficients) {}
+
 
     static CalibrationResult fromCalibrationFile(const std::filesystem::path resourcePath) {
         QFile file(resourcePath);

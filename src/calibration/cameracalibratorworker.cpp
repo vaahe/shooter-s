@@ -1,19 +1,20 @@
 #include "cameracalibratorworker.h"
 
-CameraCalibratorWorker::CameraCalibratorWorker(QObject *parent) : QThread(parent), m_cap(nullptr), m_stop(false) {
-    qDebug() << "Calibrator worker created";
-}
+
+CameraCalibratorWorker::CameraCalibratorWorker(QObject *parent) : QThread(parent), m_cap(nullptr), m_stop(false) {}
+
 
 CameraCalibratorWorker::~CameraCalibratorWorker() {
     stopCalibration();
     wait();
-
-    qDebug() << "Calibrator worker destroyed";
 }
 
+
 bool CameraCalibratorWorker::initializeCamera() {
+    const cv::String ipCameraUrl = "rtsp://admin:123456789m@192.168.1.64:554/Streaming/Channels/102";
+
     if (m_cap == nullptr) {
-        m_cap = new cv::VideoCapture("rtsp://admin:123456789m@192.168.1.64:554/Streaming/Channels/102");
+        m_cap = new cv::VideoCapture(ipCameraUrl);
         if (!m_cap->isOpened()) {
             qWarning() << "Failed to open the camera";
             return false;
@@ -34,7 +35,8 @@ void CameraCalibratorWorker::run() {
         (*m_cap) >> frame;
 
         if (frame.empty()) {
-            break;
+            qWarning() << "Empty frame received, skipping...";
+            continue;
         }
 
         try {
@@ -52,15 +54,18 @@ void CameraCalibratorWorker::run() {
         } catch (const cv::Exception& e) {
             qDebug() << QString("OpenCV error: %1").arg(e.what());
             stopCalibration();
+            break;
         }
     }
 }
+
 
 void CameraCalibratorWorker::startCalibration() {
     if (!isRunning()) {
         start();
     }
 }
+
 
 void CameraCalibratorWorker::stopCalibration() {
     QMutexLocker locker(&m_mutex);
@@ -80,6 +85,7 @@ void CameraCalibratorWorker::stopCalibration() {
 
     locker.unlock();
 }
+
 
 cv::Mat CameraCalibratorWorker::cropFrame(const cv::Mat &frame) {
     cv::Mat grayFrame;
@@ -101,6 +107,7 @@ cv::Mat CameraCalibratorWorker::cropFrame(const cv::Mat &frame) {
     return croppedFrame;
 }
 
+
 cv::Mat CameraCalibratorWorker::resizeFrame(const cv::Mat &frame, cv::Size size) {
     cv::Mat resizedFrame;
 
@@ -108,8 +115,13 @@ cv::Mat CameraCalibratorWorker::resizeFrame(const cv::Mat &frame, cv::Size size)
     return resizedFrame;
 }
 
+
 int CameraCalibratorWorker::countWhitePixels(const cv::Mat& frame) {
     int whitePixelsCount = 0;
+    std::pair<int, int> trainingParams = m_globalsManager.getTrainingParams();
+
+    int distance = trainingParams.first;
+    int minimalLightIntensity = m_globalsManager.getLightIntensity();
 
     for (int y = 0; y < frame.rows; y++) {
         for (int x = 0; x < frame.cols; x++) {
@@ -121,14 +133,26 @@ int CameraCalibratorWorker::countWhitePixels(const cv::Mat& frame) {
         }
     }
 
-    // qDebug() << "white pixels count:" << whitePixelsCount;
+    qDebug() << "white pixels count:" << whitePixelsCount;
 
-    if (whitePixelsCount > 40) {
-        qDebug() << "krakoc";
+    if (distance == 6 && minimalLightIntensity == 40) {
+        minimalLightIntensity -= 5;
+    }
+
+    if (whitePixelsCount > minimalLightIntensity) {
+        SoundPlayer *soundPlayer = new SoundPlayer();
+        soundPlayer->playSound("qrc:/sounds/sounds/gunshot.wav");
+
+        emit shotTaken();
+        m_cap->read(frame);
+
+        delete soundPlayer;
+        soundPlayer = nullptr;
     }
 
     return whitePixelsCount;
 }
+
 
 cv::Mat CameraCalibratorWorker::findMinMaxLoc(const cv::Mat &frame) {
     double minVal, maxVal;
@@ -140,9 +164,9 @@ cv::Mat CameraCalibratorWorker::findMinMaxLoc(const cv::Mat &frame) {
     cv::Mat blackFrame(frame.rows, frame.cols, CV_8UC1, cv::Scalar(0));
     cv::circle(blackFrame, maxLoc, 5, cv::Scalar(255), -1);
 
-    qDebug() << "Max Loc:" << "(" << maxLoc.x << "," << maxLoc.y << ")" << ", Max Value:" << maxVal;
     return blackFrame;
 }
+
 
 cv::Mat CameraCalibratorWorker::undistortFrame(const cv::Mat &frame) {
     CalibrationResult calibrationResult = CalibrationResult::fromCalibrationFile(":/data/data/calibration_result.xml");

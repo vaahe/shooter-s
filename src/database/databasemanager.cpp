@@ -1,9 +1,11 @@
 #include "databasemanager.h"
 
+
 DatabaseManager* DatabaseManager::getInstance() {
     static DatabaseManager instance;
     return &instance;
 }
+
 
 DatabaseManager::DatabaseManager(QObject *parent) : QObject(parent) {
     m_db = QSqlDatabase::addDatabase("QSQLITE");
@@ -13,9 +15,11 @@ DatabaseManager::DatabaseManager(QObject *parent) : QObject(parent) {
     QObject::connect(this, &DatabaseManager::connectionSucceeded, this, &DatabaseManager::createResultsTable);
 }
 
+
 DatabaseManager::~DatabaseManager() {
     disconnect();
 }
+
 
 void DatabaseManager::connect() {
     if (!m_db.isOpen()) {
@@ -31,6 +35,7 @@ void DatabaseManager::connect() {
     }
 }
 
+
 void DatabaseManager::disconnect() {
     if (m_db.isOpen()) {
         m_db.close();
@@ -38,6 +43,7 @@ void DatabaseManager::disconnect() {
         qWarning() << "Database already closed";
     }
 }
+
 
 void DatabaseManager::createTable(const QString &tableName, const QString &tableDescription) {
     if (tableName.isEmpty() || tableDescription.isEmpty()) {
@@ -52,10 +58,8 @@ void DatabaseManager::createTable(const QString &tableName, const QString &table
     if (!query.exec()) {
         qWarning() << "Failed to create table:" << query.lastError().text();
     }
-    // else {
-        // qDebug() << QString("Table %1 created successfully or already exists.").arg(tableName);
-    // }
 }
+
 
 void DatabaseManager::createUsersTable() {
     const QString userTableName = "users";
@@ -63,6 +67,7 @@ void DatabaseManager::createUsersTable() {
 
     createTable(userTableName, usersTableDescription);
 }
+
 
 void DatabaseManager::createResultsTable() {
     const QString resultsTableName = "results";
@@ -76,6 +81,7 @@ void DatabaseManager::createResultsTable() {
 
     createTable(resultsTableName, resultsTableDescription);
 }
+
 
 void DatabaseManager::insertResult(const Result &resultData) {
     QSqlQuery query(m_db);
@@ -91,6 +97,7 @@ void DatabaseManager::insertResult(const Result &resultData) {
         qWarning() << "Failed to insert result:" <<query.lastError().text();
     }
 }
+
 
 void DatabaseManager::signIn(const User& user) {
     const QString username = user.username;
@@ -113,13 +120,13 @@ void DatabaseManager::signIn(const User& user) {
     }
 
     if (query.next()) {
-        qDebug() << "line 116:" << query.value(0);
-
-        emit loginSucceeded();
+        const QString userId = query.value(0).toString();
+        emit loginSucceeded(userId);
     } else {
         emit loginFailed();
     }
 }
+
 
 void DatabaseManager::signUp(const User &user) {
     const QString username = user.username;
@@ -155,6 +162,7 @@ void DatabaseManager::signUp(const User &user) {
     }
 }
 
+
 QList<Result> DatabaseManager::getResults(const QString& userId) {
     QList<Result> results;
     QSqlQuery query(m_db);
@@ -180,6 +188,7 @@ QList<Result> DatabaseManager::getResults(const QString& userId) {
 
     return results;
 }
+
 
 QList<Result> DatabaseManager::getResultsByRange(const QString& userId, const QDate &startDate, const QDate &endDate) {
     QList<Result> resultsByRange;

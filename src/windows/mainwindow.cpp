@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
@@ -26,12 +27,19 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->soundBtn, &QPushButton::clicked, this, &MainWindow::toggleSound);
 }
 
+
 MainWindow::~MainWindow()
 {
     delete ui;
 }
 
+
 void MainWindow::startCalibrating() {
+    // if (!checkDevice()) {
+    //     QMessageBox::warning(nullptr, tr("Flash key is not found"), tr("Insert the correct flash"), QMessageBox::Ok);
+    //     return;
+    // }
+
     if (m_cameraCalibrator == nullptr) {
         m_cameraCalibrator = new CameraCalibrator(this);
     }
@@ -48,6 +56,7 @@ void MainWindow::startCalibrating() {
     });
 }
 
+
 void MainWindow::stopCalibrating() {
     if (m_cameraCalibrator != nullptr) {
         m_cameraCalibrator->stopCalibration();
@@ -57,7 +66,13 @@ void MainWindow::stopCalibrating() {
     m_cameraCalibrator = nullptr;
 }
 
+
 void MainWindow::startProcessing() {
+    // if (!checkDevice()) {
+    //     QMessageBox::warning(nullptr, "Flash key is not found", "Insert the correct flash", QMessageBox::Ok);
+    //     return;
+    // }
+
     if (m_frameProcessor == nullptr) {
         m_frameProcessor = new FrameProcessor(this);
     }
@@ -75,6 +90,7 @@ void MainWindow::startProcessing() {
     resetBackgroundImage();
 }
 
+
 void MainWindow::stopProcessing() {
     if (m_frameProcessor != nullptr) {
         m_frameProcessor->stopProcessing();
@@ -86,18 +102,47 @@ void MainWindow::stopProcessing() {
 
 
 void MainWindow::setLanguageMenu() {
-    QActionGroup *languageActionGroup = new QActionGroup(ui->languageMenu);
-    languageActionGroup->setExclusive(true);
+    QMap<QString, QString> languages;
+    languages.insert("English", QCoreApplication::applicationDirPath() + "/translations/shooter_s_en_US.qm");
+    languages.insert("Armenian", QCoreApplication::applicationDirPath() + "/translations/shooter_s_hy_AM.qm");
 
-    for (QAction *action : ui->languageMenu->actions()) {
-        languageActionGroup->addAction(action);
+    QMenu *languageMenu = ui->menuAdditional->addMenu(tr("Language"));
+    QActionGroup *languageGroup = new QActionGroup(this);
+    languageGroup->setExclusive(true);
 
-        connect(action, &QAction::triggered, this, [this, action]() {
-            QString selectedLanguage = action->text();
-            LanguageManager::switchLanguage(selectedLanguage);
+    for (auto it = languages.begin(); it != languages.end(); ++it) {
+        QAction *languageAction = new QAction(tr(it.key().toUtf8().constData()), this);
+        languageAction->setCheckable(true);
+
+        if (it.key() == "English") {
+            languageAction->setChecked(true);
+        }
+
+        languageGroup->addAction(languageAction);
+        languageMenu->addAction(languageAction);
+
+        connect(languageAction, &QAction::triggered, this, [this, languageFilePath = it.value()]() {
+            switchLanguage(languageFilePath);
+            emit languageChanged();
         });
     }
 }
+
+void MainWindow::switchLanguage(const QString& languageFilePath) {
+    static QTranslator translator;
+
+    qApp->removeTranslator(&translator);
+
+    if (translator.load(languageFilePath)) {
+        qApp->installTranslator(&translator);
+    } else {
+        qDebug() << "Failed to load translation file:" << languageFilePath;
+    }
+
+    ui->retranslateUi(this);
+}
+
+
 
 void MainWindow::setLightIntensityMenu() {
     QActionGroup *lightIntensityActionGroup = new QActionGroup(ui->lightIntensityMenu);
@@ -107,14 +152,17 @@ void MainWindow::setLightIntensityMenu() {
     for (int i = 0; i < actions.size() - 1; ++i) {
         QAction *action = actions[i];
         lightIntensityActionGroup->addAction(action);
+
+        connect(action, &QAction::triggered, this, [this, action]() {
+            m_globalsManager.setLightIntensity(action->toolTip().toInt());
+            qDebug() << "23232";
+        });
     }
 
-    if (!actions.isEmpty()) {
-        QAction *enterLightIntensityAction = actions.last();
-
-        connect(enterLightIntensityAction, &QAction::triggered, this, LightIntensityManager::enterLightIntensity);
-    }
+    const QAction *manualInputAction = ui->lightIntensityMenu->actions().back();
+    connect(manualInputAction, &QAction::triggered, this, &MainWindow::openManualIntensityWidget);
 }
+
 
 void MainWindow::startNewTraining() {
     NewTrainingModal *modal = new NewTrainingModal();
@@ -128,12 +176,17 @@ void MainWindow::startNewTraining() {
     connect(modal, &BasicModal::modalClosed, overlay, [overlay]() {overlay->close();});
     connect(modal, &NewTrainingModal::paramsSelected, this, &MainWindow::setSelectedParamsLabel);
     connect(modal, &NewTrainingModal::paramsSelected, &m_globalsManager, &GlobalsManager::setTrainingParams);
+    connect(modal, &NewTrainingModal::paramsSelected, this, &MainWindow::resetBackgroundImage);
 }
+
 
 void MainWindow::openResultsWidget() {
     ResultsWidget *resultsWidget = new ResultsWidget();
     resultsWidget->show();
+
+    connect(this, &MainWindow::languageChanged, resultsWidget, &ResultsWidget::retranslateUI);
 }
+
 
 void MainWindow::setupResultsTable() {
     QStringList headers = {"Result", "Date"};
@@ -144,6 +197,7 @@ void MainWindow::setupResultsTable() {
     ui->resultsTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->resultsTable->setSelectionMode(QAbstractItemView::SingleSelection);
 }
+
 
 void MainWindow::fillResultsTable(const Database::Result& resultData) {
     int newRow = ui->resultsTable->rowCount();
@@ -157,11 +211,13 @@ void MainWindow::fillResultsTable(const Database::Result& resultData) {
     ui->resultsTable->setItem(newRow, 1, dateItem);
 }
 
+
 void MainWindow::clearResultsTable() {
     if (ui->resultsTable->rowCount() > 0) {
         ui->resultsTable->setRowCount(0);
     }
 }
+
 
 void MainWindow::toggleSound() {
     QIcon unmuteIcon(":/images/images/unmute.png");
@@ -177,6 +233,7 @@ void MainWindow::toggleSound() {
 
     m_globalsManager.setMuteState(!isMuted);
 }
+
 
 void MainWindow::setSelectedParamsLabel(const std::pair<int, int>& selectedParams) {
     int selectedDistance = selectedParams.first;
@@ -203,6 +260,7 @@ void MainWindow::updateTargetImageSize() {
     }
 }
 
+
 void MainWindow::updateBackgroundImage(const cv::Mat &mat) {
     if (mat.empty()) {
         qWarning() << "Empty cv::Mat cannot be converted to QPixmap.";
@@ -215,8 +273,27 @@ void MainWindow::updateBackgroundImage(const cv::Mat &mat) {
     ui->targetImageLabel->setPixmap(pixmap);
 }
 
+
 void MainWindow::resetBackgroundImage() {
-    QPixmap pixmap(":/images/images/background_10.png");
+    auto [distance, imitationDistance] = m_globalsManager.getTrainingParams();
+    QString pixmapPath = QString(":/images/images/background_%1.png").arg(imitationDistance);
+    qDebug() << "imitation distance:" << pixmapPath;
+    QPixmap pixmap(pixmapPath);
+
     ui->targetImageLabel->setPixmap(pixmap);
 }
 
+void MainWindow::openManualIntensityWidget() {
+    ManualIntensityWidget *intensityWidget = new ManualIntensityWidget();
+
+    QWidget *overlay = new QWidget(this);
+    overlay->setGeometry(0, 0, width(), height());
+    overlay->setStyleSheet("background-color: rgba(0, 0, 0, 0.5);");
+    overlay->show();
+
+    connect(intensityWidget, &ManualIntensityWidget::modalClosed, overlay, &QWidget::close);
+    connect(intensityWidget, &ManualIntensityWidget::intensityChanged, overlay, &QWidget::close);
+    connect(intensityWidget, &ManualIntensityWidget::intensityChanged, intensityWidget, &ManualIntensityWidget::close);
+
+    intensityWidget->show();
+}

@@ -1,10 +1,11 @@
 #ifndef FRAMEPROCESSOR_H
 #define FRAMEPROCESSOR_H
 
+#include "src/utilities/globalsmanager.h"
 #include "src/database/databasemanager.h"
 #include "src/processing/frameprocessorworker.h"
-
 #include <QWidget>
+
 
 class FrameProcessor : public QWidget
 {
@@ -21,8 +22,10 @@ public slots:
     void initializeImageFrame();
     void showImageFrame(const cv::Mat& frame);
     void drawTrajectoryPointsOnImageFrame();
+    void drawShootingPointOnImageFrame();
 
     void initializeTrajectoryPoints(const cv::Point& trajectoryPoint);
+    void initializeShootingPoints(const cv::Point& shootingPoint);
 
 signals:
     void processingStarted(bool);
@@ -33,7 +36,10 @@ signals:
 private:
     FrameProcessorWorker *m_processorWorker;
     std::vector<cv::Point> m_trackingPoints;
+    std::vector<cv::Point> m_shootingPoints;
     cv::Mat m_imageFrame;
+    cv::Scalar m_lineColor;
+    GlobalsManager &m_globalsManager = GlobalsManager::getInstance();
 };
 
 #endif // FRAMEPROCESSOR_H

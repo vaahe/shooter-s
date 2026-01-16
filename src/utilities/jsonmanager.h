@@ -12,15 +12,18 @@
 #include <QRegularExpression>
 #include <QRegularExpressionMatchIterator>
 
+
 class JsonManager {
 public:
     JsonManager(const QString jsonFilepath) : m_file(jsonFilepath), m_isFileReady(false) {}
+
 
     ~JsonManager() {
         if (m_file.isOpen()) {
             m_file.close();
         }
     }
+
 
     bool openFile() {
         if (m_file.isOpen()) {
@@ -34,7 +37,6 @@ public:
         }
 
         m_isFileReady = true;
-        qDebug() << "File opened successfully";
 
         m_jsonObject = readFromJson();
         if (!m_jsonObject.isEmpty()) {
@@ -44,8 +46,8 @@ public:
         return true;
     }
 
+
     QString findKey(const cv::Point shootingPoint) {
-        qDebug() << "inside function";
         if (!m_isFileReady) {
             return "0";
         }
@@ -64,7 +66,6 @@ public:
                 int y = pointObject["y"].toInt();
 
                 if (x == shootingPoint.x && y == shootingPoint.y) {
-                    qDebug() << "key found:" << key;
                     return reformatKey(key);
                 }
             }
@@ -72,6 +73,7 @@ public:
 
         return "0";
     }
+
 
     QString reformatKey(QString key) {
         static QRegularExpression regex("\\d+");
@@ -84,6 +86,7 @@ public:
 
         return key;
     }
+
 
     QJsonObject readFromJson() {
         if (!m_isFileReady) {

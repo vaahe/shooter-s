@@ -4,10 +4,11 @@
 #include "src/utilities/globalsmanager.h"
 
 #include <QUrl>
+#include <memory>
 #include <QDebug>
 #include <QMediaPlayer>
 #include <QAudioOutput>
-#include <memory>
+
 
 class SoundPlayer {
 public:
@@ -21,10 +22,12 @@ public:
         setVolume();
     }
 
+
     ~SoundPlayer() {
         delete m_player;
         delete m_audioOutput;
     }
+
 
     void playSound(const QString& soundPath) {
         m_player->setSource(QUrl(soundPath));
@@ -35,11 +38,13 @@ public:
         }
     }
 
+
 private:
     void setVolume() {
         bool isMuted = m_globalsManager.getMuteState();
         m_audioOutput->setVolume(isMuted ? 0 : 0.5);
     }
+
 
 private:
     QMediaPlayer* m_player;

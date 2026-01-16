@@ -1,11 +1,12 @@
 #include "httpclient.h"
-#include <QTimer>
+
 
 BasicAuthClient::BasicAuthClient(QObject *parent) :
     QObject(parent),
     m_manager(new QNetworkAccessManager(this)),
     m_username("admin"),
     m_password("123456789m") {}
+
 
 void BasicAuthClient::response() {
     QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
@@ -22,6 +23,7 @@ void BasicAuthClient::response() {
     }
 }
 
+
 void BasicAuthClient::put(const QString& url, const QByteArray& xmlData) {
     QUrl requestUrl(m_cameraIp + url);
     QNetworkRequest request(requestUrl);
@@ -34,6 +36,7 @@ void BasicAuthClient::put(const QString& url, const QByteArray& xmlData) {
     connect(authenticatedReply, &QNetworkReply::finished, this, &BasicAuthClient::response);
 }
 
+
 QString BasicAuthClient::createBasicAuthHeader() {
     QByteArray auth = m_username.toUtf8() + ":" + m_password.toUtf8();
     QByteArray authBase64 = auth.toBase64();
@@ -42,6 +45,7 @@ QString BasicAuthClient::createBasicAuthHeader() {
 
     return "Basic " + authBase64;
 }
+
 
 void BasicAuthClient::setCameraDaytime(const QString &daytime) {
     QByteArray xmlData = QString(R"(
@@ -55,6 +59,7 @@ void BasicAuthClient::setCameraDaytime(const QString &daytime) {
     put("/ISAPI/Image/channels/1/ircutFilter/", xmlData);
 }
 
+
 void BasicAuthClient::setCameraExposure(const QString &exposition) {
     QByteArray expositionXmlData = QString(R"(
         <Shutter><ShutterLevel>%1</ShutterLevel></Shutter>
@@ -62,6 +67,7 @@ void BasicAuthClient::setCameraExposure(const QString &exposition) {
 
     put("/ISAPI/Image/channels/1/shutter/", expositionXmlData);
 }
+
 
 void BasicAuthClient::setCameraColorSettings(const QString &brightness, const QString &contrast, const QString &saturation) {
     QByteArray colorXmlData = QString(R"(
@@ -86,6 +92,7 @@ void BasicAuthClient::setCameraSharpness(const QString &sharpness) {
     put("/ISAPI/Image/channels/1/sharpness/", sharpnessXmlData);
 }
 
+
 void BasicAuthClient::applyProcessingSettings() {
     setCameraDaytime("night");
 
@@ -95,6 +102,6 @@ void BasicAuthClient::applyProcessingSettings() {
 
 
     QTimer::singleShot(1000, [this]() {
-        setCameraExposure("1/750");
+        setCameraExposure("1/2000");
     });
 }

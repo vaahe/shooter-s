@@ -1,9 +1,11 @@
 #include "authwindow.h"
 #include "ui_authwindow.h"
 
-AuthWindow::AuthWindow(QWidget *parent) : QWidget(parent), ui(new Ui::AuthWindow), m_dbManager(DatabaseManager::getInstance()) {
+
+AuthWindow::AuthWindow(QWidget *parent) : QWidget(parent), ui(new Ui::AuthWindow) {
     ui->setupUi(this);
     loadLoginData();
+    setLanguageMenu();
 
     connect(ui->loginBtn, &QPushButton::clicked, this, &AuthWindow::onLogin);
     connect(ui->registerBtn, &QPushButton::clicked, this, &AuthWindow::onRegister);
@@ -15,6 +17,7 @@ AuthWindow::AuthWindow(QWidget *parent) : QWidget(parent), ui(new Ui::AuthWindow
 
     connect(m_dbManager, &DatabaseManager::loginFailed, this, &AuthWindow::loginFailed);
     connect(m_dbManager, &DatabaseManager::loginSucceeded, this, &AuthWindow::loginSucceeded);
+    connect(m_dbManager, &DatabaseManager::loginSucceeded, this, &AuthWindow::onLoginSucceeded);
     connect(m_dbManager, &DatabaseManager::loginSucceeded, this, &AuthWindow::resetLoginValues);
 
     connect(m_dbManager, &DatabaseManager::registerFailed, this, &AuthWindow::registerFailed);
@@ -23,6 +26,7 @@ AuthWindow::AuthWindow(QWidget *parent) : QWidget(parent), ui(new Ui::AuthWindow
 
     connect(ui->rememberMeCheckbox, &QCheckBox::stateChanged, this, &AuthWindow::onRememberMe);
 }
+
 
 AuthWindow::~AuthWindow() {
     delete ui;
@@ -41,8 +45,12 @@ void AuthWindow::onLogin() {
     user.password = passwordInputStr;
 
     m_dbManager->signIn(user);
-    m_globalsManager.setUserId(user.username);
 }
+
+void AuthWindow::onLoginSucceeded(const QString& userId) {
+    m_globalsManager.setUserId(userId);
+}
+
 
 void AuthWindow::onRegister() {
     const QString usernameInputStr = ui->registerUsernameInput->text().trimmed();
@@ -64,6 +72,7 @@ void AuthWindow::onRegister() {
     m_dbManager->signUp(user);
 }
 
+
 void AuthWindow::redirectToLogin() {
     resetRegisterValues();
     ui->stackedWidget->setCurrentIndex(0);
@@ -74,6 +83,7 @@ void AuthWindow::redirectToRegister() {
     ui->stackedWidget->setCurrentIndex(1);
 }
 
+
 void AuthWindow::resetLoginValues() {
     ui->loginUsernameInput->setText("");
     ui->loginPasswordInput->setText("");
@@ -81,6 +91,7 @@ void AuthWindow::resetLoginValues() {
     ui->loginUsernameInput->setStyleSheet("");
     ui->loginPasswordInput->setStyleSheet("");
 }
+
 
 void AuthWindow::resetRegisterValues() {
     ui->registerUsernameInput->setText("");
@@ -92,11 +103,13 @@ void AuthWindow::resetRegisterValues() {
     ui->registerRepeatPasswordInput->setStyleSheet("");
 }
 
+
 void AuthWindow::validateInput(QLineEdit *inputElement, const QString inputString) {
     if (inputString.isEmpty()) {
         inputElement->setStyleSheet("border: 1px solid red");
     }
 }
+
 
 void AuthWindow::saveLoginData() {
     const QString usernameInputStr = ui->loginUsernameInput->text().trimmed();
@@ -108,12 +121,14 @@ void AuthWindow::saveLoginData() {
     settings.setValue("password", passwordInputStr);
 }
 
+
 void AuthWindow::clearLoginData() {
     QSettings settings("ycrdi", "shooter-s");
     settings.remove("rememberMe");
     settings.remove("username");
     settings.remove("password");
 }
+
 
 void AuthWindow::loadLoginData() {
     QSettings settings("ycrdi", "shooter-s");
@@ -130,10 +145,57 @@ void AuthWindow::loadLoginData() {
     }
 }
 
+
 void AuthWindow::onRememberMe() {
     if (ui->rememberMeCheckbox->isChecked()) {
        saveLoginData();
     } else {
         clearLoginData();
     }
+}
+
+
+void AuthWindow::setLanguageMenu()
+{
+    QPushButton *languageButton = new QPushButton(tr("Language"), this);
+    QMenu *languageMenu = new QMenu(this);
+
+    QAction *englishAction = new QAction(tr("English"), this);
+    QAction *armenianAction = new QAction(tr("Armenian"), this);
+
+    languageMenu->addAction(englishAction);
+    languageMenu->addAction(armenianAction);
+
+    languageButton->setMenu(languageMenu);
+
+    QLayout *existingLayout = layout();
+    if (!existingLayout) {
+        QVBoxLayout *newLayout = new QVBoxLayout(this);
+        newLayout->addWidget(languageButton, 0, Qt::AlignCenter); // Center the button
+        setLayout(newLayout);
+    } else {
+        QVBoxLayout *vLayout = qobject_cast<QVBoxLayout *>(existingLayout);
+        if (vLayout) {
+            vLayout->addWidget(languageButton, 0, Qt::AlignCenter);
+        }
+    }
+
+    connect(englishAction, &QAction::triggered, this, [this]() { switchLanguage(QCoreApplication::applicationDirPath() + "/translations/shooter_s_en_US.qm"); });
+    connect(armenianAction, &QAction::triggered, this, [this]() { switchLanguage(QCoreApplication::applicationDirPath() + "/translations/shooter_s_hy_AM.qm"); });
+}
+
+void AuthWindow::switchLanguage(const QString &languageFilePath)
+{
+    qDebug() << languageFilePath;
+    static QTranslator translator;
+
+    qApp->removeTranslator(&translator);
+
+    if (translator.load(languageFilePath)) {
+        qApp->installTranslator(&translator);
+    } else {
+        qDebug() << "Failed to load translation file:" << languageFilePath;
+    }
+
+    ui->retranslateUi(this);
 }

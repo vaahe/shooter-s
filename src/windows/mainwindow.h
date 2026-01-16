@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "src/security/usbchecker.h"
 #include "src/communication/httpclient.h"
 #include "src/utilities/globalsmanager.h"
 #include "src/utilities/languagemanager.h"
@@ -9,16 +10,20 @@
 #include "src/utilities/lightintensitymanager.h"
 #include "src/widgets/resultswidget/resultswidget.h"
 #include "src/widgets/newtrainingmodal/newtrainingmodal.h"
+#include "src/widgets/manualIntensityWidget/manualintensitywidget.h"
 
 #include <QTimer>
 #include <QImage>
 #include <QPainter>
 #include <QMainWindow>
+#include <QMessageBox>
 #include <QActionGroup>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui {class MainWindow;}
 QT_END_NAMESPACE
+
 
 class MainWindow : public QMainWindow
 {
@@ -28,9 +33,13 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+
 public:
     void setLanguageMenu();
     void setLightIntensityMenu();
+
+    void switchLanguage(const QString& languageFilePath);
+
 
 public slots:
     void stopCalibrating();
@@ -43,18 +52,22 @@ public slots:
     void openResultsWidget();
 
     void setupResultsTable();
-    void fillResultsTable(const Database::Result& result);
     void clearResultsTable();
+    void fillResultsTable(const Database::Result& result);
 
     void toggleSound();
     void updateTargetImageSize();
+    void openManualIntensityWidget();
     void setSelectedParamsLabel(const std::pair<int, int>& selectedParams);
 
     void resetBackgroundImage();
     void updateBackgroundImage(const cv::Mat& frame);
 
+
 signals:
     void loggedOut();
+    void languageChanged();
+
 
 private:
     Ui::MainWindow *ui;

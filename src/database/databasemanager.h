@@ -6,7 +6,9 @@
 #include <QSqlError>
 #include <QDateTime>
 #include <QMetaType>
+#include <QSqlRecord>
 #include <QSqlDatabase>
+
 
 namespace Database {
     struct Result {
@@ -22,7 +24,6 @@ namespace Database {
         QString password;
     };
 }
-
 
 using Database::Result;
 using Database::User;
@@ -54,7 +55,7 @@ public slots:
 
 signals:
     void loginFailed();
-    void loginSucceeded();
+    void loginSucceeded(const QString& userId);
 
     void registerFailed();
     void registerSucceeded();
